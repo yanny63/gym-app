@@ -97,25 +97,43 @@ class User(UserMixin):
             conn.close()
         
     @staticmethod
-    def login(email, password):
+    def login(user, password):
         conn, cur = database_connect('gym_app')
         try:
-            cur.execute(
-                "SELECT * FROM users WHERE email = %s",
-                (email,)
-            )
-            row = cur.fetchone()
-            if not row:
-                return False
-            hashed = row[3]
-            if not PasswordUtils.check_password(hashed, password):
-                return False
-            return User(
-                id = row[0],
-                username = row[1],
-                email = email,
-                role = row[4]
-            )
+            if '@' in user:
+                cur.execute(
+                    "SELECT * FROM users WHERE email = %s",
+                    (user,)
+                )
+                row = cur.fetchone()
+                if not row:
+                    return 'No_user'
+                hashed = row[3]
+                if not PasswordUtils.check_password(hashed, password):
+                    return False
+                return User(
+                    id = row[0],
+                    username = row[1],
+                    email = user,
+                    role = row[4]
+                )
+            else:
+                cur.execute(
+                    "SELECT * FROM users WHERE username = %s",
+                    (user,)
+                )
+                r = cur.fetchone()
+                if not r:
+                    return 'No_user'
+                h = r[3]
+                if not PasswordUtils.check_password(h, password):
+                    return False
+                return User(
+                    id = r[0],
+                    name = user,
+                    email = r[2],
+                    role = r[4]
+                )
         except Exception as e:
             print(F"Error - {e}")
         finally:
@@ -217,9 +235,24 @@ def google():
     if current_user.is_authenticated:
         return redirect("/")
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect("/")
     
+    if request.method == 'POST':
+        data = request.get_json()
+        user = data.get("user")
+        password = data.get("password")
+        u = User.login(user, password)
+        if not u:
+            return {"error": 'Wrong login'}
+        elif u == 'No_user':
+            return {"error": "No such user"}
+        else:
+            login_user(u)
+            return {"success": True}
+            
     return render_template('login.html')
 
 if __name__ == "__main__":

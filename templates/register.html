@@ -34,9 +34,9 @@
                         <div class="langs-container">
                             <button class="langs-btn" data-i18n="common:lang"></button>
                             <div class="langs not-visible"> 
-                                <button onclick="">Polski</button>
-                                <button onclick="">English</button>
-                                <button onclick="">Español</button>
+                                <button onclick="changeLanguage('pl')">Polski</button>
+                                <button onclick="changeLanguage('en')">English</button>
+                                <button onclick="changeLanguage('es')">Español</button>
                             </div>
                         </div>
                         <a href="{{ url_for('login') }}" data-i18n="common:login"></a>

@@ -28,7 +28,7 @@ function updateContent() {
 
 function changeLanguage(lang) {
     localStorage.setItem("lang", lang)
-    .changeLanguage(lang, () => {
+    i18next.changeLanguage(lang, () => {
         updateContent()
     })
 }
