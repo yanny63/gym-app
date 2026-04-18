@@ -1,0 +1,227 @@
+.valid {
+    color: var(--accent);
+}
+.invalid {
+    color: var(--error);
+}
+
+.notifications {
+    position: absolute;
+    right: 20px;
+    bottom: 30px;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+}
+
+.notification-true {
+    display: block;
+    width: 220px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(240deg,rgba(0, 110, 40, 1) 0%, rgba(22, 163, 74, 1) 51%, rgba(0, 214, 79, 1) 100%);
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: var(--padding-lg);
+}
+
+.notification-false {
+    display: block;
+    width: 220px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(240deg,rgba(143, 0, 0, 1) 14%, rgba(199, 0, 0, 1) 63%, rgba(255, 0, 0, 1) 100%);
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: var(--padding-lg);
+}
+
+
+main {
+    padding: 48px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-family: "Inter", sans-serif;
+}
+
+.register-left {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+}
+.register-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 420px;
+    width: 100%;
+}
+
+.register-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--text-primary);
+}
+.register-header p {
+    letter-spacing: -0.03px;
+}
+
+.register-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.register-buttons a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--padding-md);
+    background-color: var(--card);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.4s;
+}
+.register-buttons a:hover {
+    background-color: var(--hover);
+    opacity: 0.8;
+}
+
+.register-buttons a svg {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    padding-left: 10px;
+    transform: translateY(-50%);
+}
+
+.or-email {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.line {
+    width: 100%;
+    background-color: #333;
+    border-radius: var(--radius-sm);
+    height: 1px;
+}
+.line-text {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.input label {
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.input input {
+    outline: none;
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    padding: var(--padding-md);
+    color: var(--text-primary);
+    background-color: var(--input-bg);
+    transition: 0.4s;
+}
+.input input:focus {
+    border-color: var(--input-border-focus);
+    filter: brightness(120%);
+}
+
+.validator {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.register-list {
+    list-style-type: none;
+}
+
+.register-submit {
+    padding: var(--padding-md);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background-color: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    transition: 0.4s;
+}
+.register-submit:hover {
+    background-color: var(--primary-hover);
+}
+.register-submit:disabled{
+    cursor: not-allowed;
+    background-color: var(--hover);
+    color: var(--text-secondary);
+    transition: 0.4s;
+}
+.register-submit:disabled:hover {
+    background-color: var(--hover);
+    color: var(--text-secondary);
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    font-family: "Inter", sans-serif;
+    color: var(--text-primary);
+}
+.login a {
+    text-decoration: none;
+    color: var(--primary);
+    transition: 0.4s;
+}
+.login a:hover {
+    color: var(--primary-hover);
+}
+.login a:active {
+    color: var(--primary-active);
+}
+
+
+.register-right {
+    width: 50%;
+}
