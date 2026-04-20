@@ -28,6 +28,11 @@
     --input-border: #cbd5e1;
 }
 
+.visible {
+    opacity: 1 !important;
+    transform: translate3d(0, 0, 0) !important;
+}
+
 main {
     padding: 48px;
 }
@@ -40,6 +45,9 @@ main {
     padding: var(--padding-md);
     background-color: var(--card);
     border-radius: var(--radius-sm);
+    opacity: 0;
+    transform: translateX(-80px);
+    transition: 0.6s;
 }
 
 .home-header {
@@ -106,6 +114,9 @@ main {
     display: flex;
     flex-direction: row;
     background-color: var(--card);
+    opacity: 0;
+    transform: translateY(-80px);
+    transition: 0.6s;
 }
 
 .log-left {

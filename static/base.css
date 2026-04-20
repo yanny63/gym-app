@@ -88,6 +88,8 @@ body {
 }
 
 .top_nav {
+    position: sticky;
+    top: 0;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -96,6 +98,7 @@ body {
     color: var(--text-primary);
     font-family: "Inter", sans-serif;
     font-size: 1.05rem;
+    background-color: var(--bg);
 }
 
 .nav_container {

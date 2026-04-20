@@ -8,6 +8,7 @@
         
         <title data-i18n="home:title"></title>
 
+        <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
         <script src="https://unpkg.com/i18next@23/i18next.min.js" defer></script>
         <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
         <script src="https://unpkg.com/i18next-http-backend@2/i18nextHttpBackend.min.js" defer></script>
@@ -50,7 +51,7 @@
             </div>
         </nav>
         <main>
-            <section id="home">
+            <section class="section" id="home">
                 <div class="home-header">
                     <h1>
                         <span data-i18n="home:logging-sessions"></span> <span class="lastpush-header" data-i18n="home:lastpush"></span>
@@ -88,7 +89,7 @@
                     <img src="static/images/app-image.png" alt="App Photo">
                 </div>
             </section>
-            <section id="log-workouts">
+            <section class="section" id="log-workouts">
                 <div class="log-left">
                     <img src="static/images/log-app.png" alt="App">
                 </div>
