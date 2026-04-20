@@ -36,11 +36,12 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin):
-    def __init__(self, id, name, email, role):
+    def __init__(self, id, name, email, role, profile_picture):
         self.id = id
         self.name = name
         self.email = email
         self.role = role
+        self.profile_picture = profile_picture
 
     @staticmethod
     def get(username):
@@ -52,12 +53,13 @@ class User(UserMixin):
             )
             row = cur.fetchone()
             if not row:
-                return False
+                return None
             return User(
                 id = row[0],
                 name = username,
                 email = row[2],
-                role = row[4]
+                role = row[4],
+                profile_picture = row[7]
             )
         except Exception as e:
             conn.rollback()
@@ -115,7 +117,8 @@ class User(UserMixin):
                     id = row[0],
                     username = row[1],
                     email = user,
-                    role = row[4]
+                    role = row[4],
+                    profile_picture = row[7]
                 )
             else:
                 cur.execute(
@@ -132,14 +135,15 @@ class User(UserMixin):
                     id = r[0],
                     name = user,
                     email = r[2],
-                    role = r[4]
+                    role = r[4],
+                    profile_picture = row[7]
                 )
         except Exception as e:
             print(F"Error - {e}")
         finally:
             conn.close()
 
-class PasswordUtils():
+class PasswordUtils:
     @staticmethod
     def hash_password(password):
         return generate_password_hash(password)
@@ -176,7 +180,39 @@ class PasswordUtils():
         token = "".join(secrets.choice(string.ascii_letters + string.digits) for _ in range(6))
         return token
 
-            
+# class FileManager:
+#     def __init__(self, path):
+#         self.path = path
+#         self.history = []
+#         self.name = None
+
+#     def saveFile(self):
+#         path = f"images/{self.name}"
+#         if os.path.exists(path):
+#             self.history.append(f"Replaced: {path}")
+#             os.replace(path)
+#             return 'Replaced'
+#         else:
+#             os.path.join('images', self.name)
+#             return 'Saved'
+        
+#     def getFile(self):
+#         if self.name is None:
+#             return 'No such file'
+#         self.history.append(f"Got file: {datetime.now()}")
+#         path = f"images/{self.name}"
+#         return path
+    
+#     def extentionCheck(self, name):
+#         allowed_extentions = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
+#         extention = name.split(".")[1]
+#         if not extention in allowed_extentions:
+#             return False
+#         self.name = name
+#         return True
+    
+#     def getHistory(self):
+#         return self.history
 
 
 @login_manager.user_loader
@@ -244,11 +280,20 @@ def login():
         data = request.get_json()
         user = data.get("user")
         password = data.get("password")
+        language = data.get("language")
+
+        if language == 'pl':
+            invalid_credentials = 'Nieprawidłowe dane logowania.'
+        elif language == 'es':
+            invalid_credentials = 'Credenciales incorrectas.'
+        else:
+            invalid_credentials = 'Invalid login credentials.'
+
         u = User.login(user, password)
         if not u:
-            return {"error": 'Wrong login'}
+            return {"error": invalid_credentials, "input": "user"}
         elif u == 'No_user':
-            return {"error": "No such user"}
+            return {"error": invalid_credentials}
         else:
             login_user(u)
             return {"success": True}
