@@ -300,6 +300,51 @@ def login():
             
     return render_template('login.html')
 
+@app.route("/calculator")
+def calculator():
+    return render_template('calculator.html')
+
+@app.route("/API/calculator", methods=['POST'])
+def calculate():
+
+    data = request.get_json()
+
+    if data.get("type") == 'one-rep':
+        weight = data.get('weight')
+        reps = data.get('reps')
+        
+        if reps >= 1 and reps <= 3:
+            result = weight * 36 / (37 - reps)
+            return {"result": result}
+        elif reps > 3 and reps <= 10:
+            result = weight * (1 + reps / 30)
+            return {"result": result}
+        elif reps > 10:
+            result = (100 * weight) / (101.3 - 2.67123 * reps)
+            return {"result": result}
+        else:
+            return "", 400
+        
+    if data.get("type") == 'calories':
+        weight = data.get('weight')
+        height = data.get('height')
+        age = data.get('age')
+        gender = data.get('gender')
+        activity = data.get('activity')
+
+        if gender == 'male':
+            bmr = 10 * weight + 6.25 * height - 5 * age  + 5
+            caloric_intake = bmr * int(activity)
+            return {"intake": caloric_intake}
+        elif gender == 'female':
+            bmr = 10 * weight + 6.25 * height - 5 * age  - 161
+            caloric_intake = bmr * int(activity)
+            return {"intake": caloric_intake}
+        else:
+            return "", 400
+
+    return {"status": "ok"}
+
 @app.route("/timer")
 def timer():
     return render_template('timer.html')

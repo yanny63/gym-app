@@ -29,7 +29,6 @@ let current_scroll
 
 document.onscroll = () => {
     current_scroll = window.scrollY
-    console.log(current_scroll)
     if (current_scroll > last_scroll) {
         nav.classList.add('nav-not_visible')
     }

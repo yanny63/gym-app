@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="yanny63">
+        <meta name="description" content="A Gym App">
+        <meta name="viewport" content="initial-scale=1.0, width=device-width">
+        
+        <title data-i18n="home:title"></title>
+
+        
+        <script src="https://unpkg.com/i18next@23/i18next.min.js" defer></script>
+        <script src="https://unpkg.com/i18next-http-backend@2/i18nextHttpBackend.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js" defer></script>
+        <script src="{{ url_for('static', filename='js/lang.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='js/calculator.js') }}" defer></script>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='pages/calculator.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="top_nav">
+            <div class="nav_container">
+                <ul class="nav_links">
+                    <li><a href="/#home" data-i18n="common:home"></a></li>
+                    <li><a href="" data-i18n="common:training"></a></li>
+                    <li><a href="" data-i18n="common:exercise"></a></li>
+                    <li><a href="#" data-i18n="common:calculator"></a></li>
+                    <li><a href="/timer" data-i18n="common:timer"></a></li>
+                </ul>
+                <div class="nav_buttons">
+                    <div class="nav-buttons-container">
+                        <div class="langs-container">
+                            <button class="langs-btn" data-i18n="common:lang"></button>
+                            <div class="langs not-visible"> 
+                                <button onclick="changeLanguage('pl')">Polski</button>
+                                <button onclick="changeLanguage('en')">English</button>
+                                <button onclick="changeLanguage('es')">Español</button>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('login') }}" data-i18n="common:login"></a>
+                        <a href="{{ url_for('register') }}" data-i18n="common:signup"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+        <main>
+            <section id="calculator">
+                <div class="calculator">
+                    <h1 data-i18n="calculator:select"></h1>
+                    <div class="buttons">
+                        <button class="button" data-i18n="calculator:one_rep"></button>
+                        <button class="button" data-i18n="calculator:calories"></button>
+                        <button class="button" data-i18n="calculator:compare_strength"></button>
+                    </div>
+                    <div class="one_rep">
+                        <h1 data-i18n="calculator:enter-lift-data" style="text-align: center;"></h1>
+                        <div class="input-container">
+                            <label for="weight" data-i18n="calculator:weight"></label>
+                            <input type="number" id="weight" data-i18n-placeholder="calculator:weight-placeholder">
+                        </div>
+                        <div class="input-container">
+                            <label for="reps" data-i18n="calculator:reps"></label>
+                            <input type="number" id="reps" data-i18n-placeholder="calculator:reps-placeholder">
+                        </div>
+                        <button id="one_rep-button" class="category-button" data-i18n="calculator:calculate"></button>
+                    </div>
+                    <div class="calories">
+                        <h1 data-i18n="calculator:enter-calorie-data" style="text-align: center;"></h1>
+                        <div class="input-container">
+                            <label for="weight" data-i18n="calculator:weight"></label>
+                            <input type="number" id="weight" data-i18n-placeholder="calculator:weight-placeholder"> 
+                        </div>
+                        <div class="input-container">
+                            <label for="height" data-i18n="calculator:height"></label>
+                            <input type="number" id="height" data-i18n-placeholder="calculator:height-placeholder"> 
+                        </div>
+                        <div class="ts-container">
+                            <label for="activity" data-i18n="calculator:activity"></label>
+                            <select id="activity">
+                                <option data-i18n="calculator:sedentary" value="1.2"></option>
+                                <option data-i18n="calculator:little" value="1.375"></option>
+                                <option data-i18n="calculator:moderate" value="1.55"></option>
+                                <option data-i18n="calculator:high" value="1.725"></option>
+                                <option data-i18n="calculator:athlete" value="1.9"></option>
+                            </select>
+                        </div>
+                        <div class="input-age-container">
+                            <label for="age" data-i18n="calculator:age"></label><span id="current-age"></span>
+                            <input type="range" min="1" max="99" id="age"> 
+                        </div>
+                        <div class="hidden-container">
+                            <input type="radio" id="male" class="input_hidden" name="gender">
+                            <label class="isCheckbox" for="male">
+                                <span class="circle"></span>
+                                <span data-i18n="calculator:male"></span>
+                            </label>
+                            <input type="radio" id="female" class="input_hidden" name="gender">
+                            <label class="isCheckbox" for="female">
+                                <span class="circle"></span>
+                                <span data-i18n="calculator:female"></span>
+                            </label>
+                        </div>
+                        <button id="calories-button" class="category-button" data-i18n="calculator:calculate"></button>
+                    </div>
+                    <div class="compare_strength">
+
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script>
+            let ts = null
+            
+            function ts_init() {
+                document.querySelectorAll('#activity option').forEach(o => {
+                    const key = o.getAttribute('data-i18n')
+                    if (key) o.textContent = i18next.t(key)
+                })
+                ts = new TomSelect('#activity', {
+                    hideSelected: true,
+                    placeholder: i18next.t("calculator:activity-placeholder")
+                })
+            }
+            function langChange(){
+                ts.settings.placeholder = i18next.t("calculator:activity-placeholder")
+                ts.inputState()
+            }
+            document.addEventListener("DOMContentLoaded", () => {
+                i18next.on('initialized', ts_init)
+                i18next.on('languageChange', langChange)
+                if (i18next.isInitialized) ts_init()
+            })
+        </script>
+    </body>
+</html>
