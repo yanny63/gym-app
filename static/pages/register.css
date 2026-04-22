@@ -23,7 +23,7 @@ main {
     flex-direction: column;
     gap: 30px;
     max-width: 420px;
-    width: 100%;
+    width: 100%; 
 }
 
 .register-header {
@@ -56,7 +56,7 @@ main {
     transition: 0.4s;
 }
 .register-buttons a:hover {
-    background-color: var(--hover);
+    background-color: var(--disabled);
     opacity: 0.8;
 }
 
@@ -123,7 +123,7 @@ main {
     transition: 0.4s;
 }
 .input input:focus {
-    border-color: var(--input-border-focus);
+    border-color: var(--hover);
     filter: brightness(120%);
 }
 
@@ -141,22 +141,22 @@ main {
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     cursor: pointer;
-    background-color: var(--primary);
+    background-color: var(--button);
     color: #fff;
     font-weight: 600;
     transition: 0.4s;
 }
 .register-submit:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--hover);
 }
 .register-submit:disabled{
     cursor: not-allowed;
-    background-color: var(--hover);
+    background-color: var(--disabled);
     color: var(--text-secondary);
     transition: 0.4s;
 }
 .register-submit:disabled:hover {
-    background-color: var(--hover);
+    background-color: var(--disabled);
     color: var(--text-secondary);
 }
 

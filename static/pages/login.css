@@ -51,7 +51,7 @@ main {
 .login-buttons a:hover {
     background-color: var(--disabled);
     opacity: 0.8;
-}
+} 
 
 .login-buttons a svg {
     position: absolute;
