@@ -4,7 +4,7 @@ const browserLang = navigator.language.split("-")[0]
 i18next.use(i18nextHttpBackend).init({
     lng: savedLang || browserLang,
     debug: false,
-    ns: ["common", "home", 'register', 'login'],
+    ns: ["common", "home", 'register', 'login', 'timer'],
     defaultNS: "common",
     backend: {
         loadPath: "/static/langs/{{lng}}/{{ns}}.json"

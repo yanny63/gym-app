@@ -6,11 +6,11 @@
     --text: #0f172a;
     --text-secondary: #64748b;
 
-    --button: #22c55e;
-    --hover: #16a34a;
-    --active: #15803d;
+    --button: #3b82f6;   
+    --hover: #2563eb;    
+    --active: #1d4ed8;   
 
-    --accent-soft: #dcfce7;
+    --accent-soft: #dbeafe;
     --disabled: #e2e2e2;
 
     --padding-sm: 6px;
@@ -27,6 +27,7 @@
     --input-bg: #f8fafc;
     --input-border: #cbd5e1;
 }
+
 
 * {
     padding: 0;
@@ -45,6 +46,13 @@ body {
 @keyframes animate-body {
     from {transform: translateY(-100px);}
     to {transform: translateY(0);}
+}
+
+.nav-not_visible {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-20px) !important;
+    transition: 0.6s;
 }
 
 .notifications {
@@ -99,6 +107,11 @@ body {
     font-family: "Inter", sans-serif;
     font-size: 1.05rem;
     background-color: var(--bg);
+    z-index: 100;
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+    transition: 0.4s;
 }
 
 .nav_container {
@@ -191,6 +204,7 @@ body {
     opacity: 1;
     pointer-events: all;
     background-color: transparent;
+    z-index: 101;
     transition: 0.4s;
 }
 .langs button {

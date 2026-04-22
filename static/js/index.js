@@ -8,7 +8,7 @@ const observer = new IntersectionObserver((entries) => {
         }
         }
     )
-}, {threshold: 0.1})
+}, {threshold: 0.45})
 
 document.querySelectorAll(".section").forEach(section => {
     observer.observe(section)

@@ -21,3 +21,20 @@ lang_options.addEventListener("mouseleave", () => {
         langs_close()
     }
 })
+
+
+const nav = document.querySelector(".top_nav")
+let last_scroll
+let current_scroll
+
+document.onscroll = () => {
+    current_scroll = window.scrollY
+    console.log(current_scroll)
+    if (current_scroll > last_scroll) {
+        nav.classList.add('nav-not_visible')
+    }
+    else {
+        nav.classList.remove('nav-not_visible')
+    }
+    last_scroll = current_scroll
+}
