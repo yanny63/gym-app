@@ -1,3 +1,23 @@
 {
-    "title": "LastPush - Strona Główna"
+    "title": "LastPush - Strona Główna",
+    "logging-sessions": "Zapisywanie treningów nigdy nie było prostsze dzięki",
+    "lastpush": "LastPush",
+    "lastpush-header-description": "LastPush to darmowy dziennik treningowy na Androida, iOS oraz komputer.",
+    "lastpush-header-description2": "Buduj rutyny i rywalizuj ze znajomymi.",
+    "windows-download": "Pobierz na Windows",
+    "log&compete": "Trenuj i rywalizuj",
+    "log-description": "Wszystko, czego potrzebujesz, aby budować rutyny, śledzić postępy i wyprzedzić znajomych.",
+    "log-compete": "Rywalizuj ze znajomymi i co tydzień walcz o podium",
+    "log-create": "Twórz i personalizuj swoje treningi w kilka sekund",
+    "log-consistency": "Bądź regularny i zdobywaj punkty za każdą sesję",
+    "log-watch": "Śledź swoje postępy na szczegółowych wykresach",
+    "log-miss": "Już nigdy nie odpuścisz treningu dzięki powiadomieniom „Push”",
+    "measure-progress": "Mierz postępy",
+    "measure-progress-desc": "Utrzymanie motywacji jest łatwiejsze, gdy widzisz, jak daleką drogę przeszedłeś – i jak wypadasz na tle konkurencji.",
+    "measure-bullet-1": "Śledź objętość i wzrost siły w czasie",
+    "measure-bullet-2": "Świętuj każdy przełom dzięki automatycznemu śledzeniu rekordów (PR)",
+    "measure-bullet-3": "Dowiedz się dokładnie, ile wyciśniesz w tym decydującym „LastPush”",
+    "measure-bullet-4": "Porównuj swoje postępy bezpośrednio ze statystykami znajomych",
+    "measure-bullet-5": "Dostęp do każdej serii i powtórzenia, które kiedykolwiek zapisałeś",
+    "measure-bullet-6": "Dodawaj swoje unikalne ćwiczenia do biblioteki"
 }

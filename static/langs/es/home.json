@@ -1,3 +1,23 @@
 {
-    "title": "LastPush - Inicio"
+    "title": "LastPush - Inicio",
+    "logging-sessions": "Registrar tus entrenamientos nunca ha sido tan fácil como con",
+    "lastpush": "LastPush",
+    "lastpush-header-description": "LastPush es un rastreador de entrenamiento gratuito para Android, iOS y escritorio.",
+    "lastpush-header-description2": "Crea rutinas y compite con tus amigos.",
+    "windows-download": "Descargar para Windows",
+    "log&compete": "Registra y compite",
+    "log-description": "Todo lo que necesitas para crear rutinas, seguir tu progreso y superar a tus amigos.",
+    "log-compete": "Compite con amigos y sube en el ranking cada semana",
+    "log-create": "Crea y personaliza tus entrenamientos en segundos",
+    "log-consistency": "Mantén la constancia y gana puntos por cada sesión",
+    "log-watch": "Mira cómo crecen tus resultados con gráficas detalladas",
+    "log-miss": "No pierdas ni un entrenamiento con las notificaciones 'Push' personalizadas",
+    "measure-progress": "Mide tu progreso",
+    "measure-progress-desc": "Mantener la motivación es más fácil cuando ves lo lejos que has llegado y cómo te comparas con la competencia.",
+    "measure-bullet-1": "Sigue tu volumen y aumento de fuerza a lo largo del tiempo",
+    "measure-bullet-2": "Celebra cada logro con el seguimiento automático de récords (PR)",
+    "measure-bullet-3": "Conoce exactamente cuánto puedes levantar para ese último 'LastPush'",
+    "measure-bullet-4": "Compara tu progreso directamente con las estadísticas de tus amigos",
+    "measure-bullet-5": "Accede a cada serie y repetición que hayas registrado",
+    "measure-bullet-6": "Añade tus movimientos únicos a la biblioteca"
 }
