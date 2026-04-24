@@ -311,34 +311,40 @@ def calculate():
 
     if data.get("type") == 'one-rep':
         weight = data.get('weight')
+        weight = int(weight)
         reps = data.get('reps')
+        reps = int(reps)
         
         if reps >= 1 and reps <= 3:
             result = weight * 36 / (37 - reps)
-            return {"result": result}
+            return {"result": round(result, 2)}
         elif reps > 3 and reps <= 10:
             result = weight * (1 + reps / 30)
-            return {"result": result}
+            return {"result": round(result, 2)}
         elif reps > 10:
             result = (100 * weight) / (101.3 - 2.67123 * reps)
-            return {"result": result}
+            return {"result": round(result, 2)}
         else:
             return "", 400
         
     if data.get("type") == 'calories':
         weight = data.get('weight')
+        weight = int(weight)
         height = data.get('height')
+        height = int(height)
         age = data.get('age')
+        age = int(age)
         gender = data.get('gender')
         activity = data.get('activity')
+        activity = float(activity)
 
         if gender == 'male':
             bmr = 10 * weight + 6.25 * height - 5 * age  + 5
-            caloric_intake = bmr * int(activity)
+            caloric_intake = bmr * activity
             return {"intake": caloric_intake}
         elif gender == 'female':
             bmr = 10 * weight + 6.25 * height - 5 * age  - 161
-            caloric_intake = bmr * int(activity)
+            caloric_intake = bmr * activity
             return {"intake": caloric_intake}
         else:
             return "", 400

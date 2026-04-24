@@ -56,13 +56,27 @@
         <main>
             <section id="calculator">
                 <div class="calculator">
-                    <h1 data-i18n="calculator:select"></h1>
-                    <div class="buttons">
-                        <button class="button" data-i18n="calculator:one_rep"></button>
-                        <button class="button" data-i18n="calculator:calories"></button>
-                        <button class="button" data-i18n="calculator:compare_strength"></button>
+                    <div class="init_header">
+                        <h1 data-i18n="calculator:select"></h1>
+                        <div class="buttons">
+                            <button class="button" id="onerep" data-i18n="calculator:one_rep"></button>
+                            <button class="button" id="calories" data-i18n="calculator:calories"></button>
+                            <button class="button" data-i18n="calculator:compare_strength"></button>
+                        </div>
                     </div>
-                    <div class="one_rep">
+                    <div class="one_rep not-visible">
+                        <button class="exit">
+                            <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                                <polyline 
+                                    points="15,5 7,12 15,19" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    stroke-width="1.5" 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                        </button>
                         <h1 data-i18n="calculator:enter-lift-data" style="text-align: center;"></h1>
                         <div class="input-container">
                             <label for="weight" data-i18n="calculator:weight"></label>
@@ -74,11 +88,23 @@
                         </div>
                         <button id="one_rep-button" class="category-button" data-i18n="calculator:calculate"></button>
                     </div>
-                    <div class="calories">
+                    <div class="calories not-visible">
+                        <button class="exit">
+                            <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                                <polyline 
+                                    points="15,5 7,12 15,19" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    stroke-width="1.5" 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                        </button>
                         <h1 data-i18n="calculator:enter-calorie-data" style="text-align: center;"></h1>
                         <div class="input-container">
-                            <label for="weight" data-i18n="calculator:weight"></label>
-                            <input type="number" id="weight" data-i18n-placeholder="calculator:weight-placeholder"> 
+                            <label for="calories_weight" data-i18n="calculator:weight"></label>
+                            <input type="number" id="calories_weight" data-i18n-placeholder="calculator:weight-placeholder"> 
                         </div>
                         <div class="input-container">
                             <label for="height" data-i18n="calculator:height"></label>
@@ -114,6 +140,12 @@
                     </div>
                     <div class="compare_strength">
 
+                    </div>
+                    <div class="results not-visible">
+                        <h1></h1>
+                        <div class="results-inner-div">
+                            <span id="results-display"></span>
+                        </div>
                     </div>
                 </div>
             </section>

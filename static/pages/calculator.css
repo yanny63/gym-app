@@ -36,6 +36,20 @@ main {
     height: 100%;
 }
 
+.not-visible-buttons {
+    transform: translateX(-40px) !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transition: 0.6s;
+}
+.not-visible {
+    transform: translateX(-40px) !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    transition: 0.6s;
+}
+
 #calculator {
     display: flex;
     justify-content: center;
@@ -56,12 +70,25 @@ main {
     gap: 20px;
 }
 
+.init_header {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    transition: 0.6s;
+}
+
 .buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 6px;
+    transform: translateX(0);
+    pointer-events: all;
+    opacity: 1;
+    transition: 0.6s;
 }
 
 .button {
@@ -85,12 +112,39 @@ main {
     flex-direction: column;
     gap: 10px;
     width: 380px;
+    transform: translateX(0);
+    pointer-events: all;
+    opacity: 1;
+    position: static;
+    transition: 0.6s;
 }
 .calories {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 380px;
+    position: absolute;
+    transform: translateX(0);
+    pointer-events: all;
+    opacity: 1;
+    transition: 0.6s;
+}
+
+.calories h1, .one_rep h1 {
+    margin-top: 20px;
+}
+
+.exit {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.exit svg {
+    width: 18px;
+    height: 18px;
 }
 
 .input-container {
@@ -206,4 +260,23 @@ main {
 }
 .ts-wrapper {
     color: var(--text);
+}
+
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+}
+.results h1 {
+    letter-spacing: -0.03px;
+}
+.results-inner-div {
+    padding: var(--padding-sm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-size: 1.15rem;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.1);
 }
