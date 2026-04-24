@@ -1,0 +1,20 @@
+{
+    "title": "LastPush - Rejestracja",
+    "signup": "Zarejestruj się",
+    "createaccount": "Utwórz konto LastPush.",
+    "with-google": "Zarejestruj się przez Google",
+    "with-apple": "Zarejestruj się przez Apple",
+    "or-email": "Lub przez e-mail",
+    "email": "E-mail",
+    "email-placeholder": "przyklad@gmail.com",
+    "password": "Hasło",
+    "password-placeholder": "••••••••••••",
+    "requirements": "Hasło musi zawierać co najmniej:",
+    "length": "8 znaków",
+    "special": "1 znak specjalny",
+    "number": "1 cyfrę",
+    "already_account": "Masz już konto?",
+    "login": "Zaloguj się",
+    "username": "Nazwa użytkownika",
+    "username-placeholder": "Wpisz nazwę użytkownika..."
+}

@@ -1,0 +1,16 @@
+{
+    "title": "LastPush - Login",
+    "log_in": "Log In",
+    "login-ur-acc": "Log into your LastPush account",
+    "with-google": "Continue with Google",
+    "with-apple": "Continue with Apple",
+    "oremail": "Or with Email",
+    "user": "Username or Email",
+    "user-placeholder": "Username or email",
+    "password": "Password",
+    "password-placeholder": "••••••••••••",
+    "login": "Login",
+    "forgot": "Reset password",
+    "new": "New to LastPush?",
+    "signup": "Sign Up"
+}
