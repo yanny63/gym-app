@@ -300,6 +300,10 @@ def login():
             
     return render_template('login.html')
 
+@app.route("/training")
+def training():
+    return render_template("training.html")
+
 @app.route("/calculator")
 def calculator():
     return render_template('calculator.html')
