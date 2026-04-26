@@ -304,6 +304,12 @@ def login():
 def training():
     return render_template("training.html")
 
+@app.route("/API/training")
+def training_api():
+    if not current_user.is_authenticated:
+        return "", 404
+
+
 @app.route("/calculator")
 def calculator():
     return render_template('calculator.html')

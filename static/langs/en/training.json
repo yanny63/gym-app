@@ -9,5 +9,11 @@
     "exercise": "Exercise",
     "sets": "Sets",
     "reps": "Reps",
-    "start-workout": "Start Workout"
+    "start-workout": "Start Workout",
+    "recent-activity": "Recent Activity",
+    "check-details": "Check Details",
+    "current-goals": "My Current Goals",
+    "done": "Done",
+    "last-sessions": "Last Sessions",
+    "date": "Date"
 }

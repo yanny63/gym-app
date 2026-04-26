@@ -29,17 +29,56 @@
 }
 
 html, body {
-    height: 100%;
+    animation: none;
+    min-height: 100vh;
 }
 html::-webkit-scrollbar, body::-webkit-scrollbar {
     display: none;
+}
+
+.not-visible {
+    opacity: 0 !important;
+}
+
+.loader {
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.2s;
+}
+.spinner {
+    width: 58px;
+    height: 58px;
+    border: 3px solid var(--border);
+    border-top-color: var(--active);
+    border-radius: 50%;
+    background-color: transparent;
+    animation: animate-spinner 0.8s linear infinite;
+}
+@keyframes animate-spinner {
+    to {transform: rotate(360deg);}
 }
 
 main {
     padding: 48px;
     display: flex;
     flex-direction: row;
-    height: 100%;
+    transition: 0.6s;
+}
+
+.break {
+    width: 100%;
+    min-height: 1px;
+    height: 1px;
+    border-radius: var(--radius-xl);
+    background-color: var(--border);
+}
+.sectionBreak {
+    background-color: var(--card);
+    min-height: 40px;
+    
 }
 
 .training-aside {
@@ -51,7 +90,6 @@ main {
     border-right: 0.5px solid var(--border);
     background-color: var(--card);
     padding: var(--padding-md);
-    height: 100%;
 }
 .training-aside a {
     font-size: 1.05rem;
@@ -73,11 +111,12 @@ main {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    transition: 0.6s;
+    opacity: 1;
 }
 
 .section {
     color: var(--text);
-    position: relative;
     width: 100%;
     padding: var(--padding-md);
     background-color: var(--card);
@@ -86,7 +125,20 @@ main {
     flex-direction: column;
     align-items: center;
     font-family: "Inter", sans-serif;
-    gap: 26px;
+    gap: 40px;
+}
+
+.todays-workout-container {
+    color: var(--text);
+    width: 100%;
+    padding: var(--padding-md);
+    background-color: var(--card);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    gap: 16px;
 }
 #span-date {
     position: absolute;
@@ -127,27 +179,40 @@ main {
     
 }
 .tableHeader div {
-    width: 33%;
+    flex: 1;
     text-align: center;
     font-weight: 600;
 }
-.columns {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
+
 .isLine {
     height: 1px;
     width: 100%;
     background-color: var(--border);
 }
-.tableColumn {
-    width: 33%;
-    text-align: center;
+
+.rows {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    width: 100%;
+    gap: 8px;
+}
+.tableRow {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     font-family: "Inter", sans-serif;
+    border-radius: var(--radius-sm);
+    padding: var(--padding-sm);
+    cursor: pointer;
+    transition: 0.4s;
+}
+.tableRow:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.1);
+}
+.rowItem {
+    flex: 1;
+    text-align: center;
 }
 
 .startWorkout {
@@ -165,4 +230,112 @@ main {
 .startWorkout:hover {
     background-color: var(--hover);
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recent-activity-parent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    align-items: center;
+}
+.recent-activity-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.recent-activity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-family: "Inter", sans-serif;
+    width: 24%;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: var(--padding-lg);
+}
+.recent-activity-header {
+    text-align: center;
+}
+.recent-activity-button {
+    width: 140px;
+    padding: var(--padding-sm);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--button);
+    transition: 0.4s;
+}
+.recent-activity-button:hover {
+    transform: translate3d(0, -2px, 0);
+    background-color: var(--hover);
+}
+
+.current-goals {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.current-goals-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.current-goal {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--padding-lg);
+    
+}
+.current-goal span {
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+    font-weight: 600;
+}
+.current-goal-check {
+    width: 120px;
+    padding: var(--padding-sm);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--button);
+    transition: 0.4s;
+}
+.current-goal-check:hover {
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--hover);
+}
+
+.last-sessions {
+    width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+} 
+.last-sessions-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }

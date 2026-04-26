@@ -61,51 +61,107 @@
                 <a class="isLink" href="" data-i18n="training:goals"></a>
                 <a class="isLink" href="" data-i18n="training:stats"></a>
             </aside>
-            <article class="training-article">
+            <article class="training-article not-visible">
                 <section id="todays-workout" class="section">
-                    <span id="span-date">2026-04-12</span>
-                    <h1 data-i18n="training:todays-t"></h1>
-                    <div class="training-info">
-                        <h3 id="training-name">Trening A</h3>
-                        <div class="training-exercises-container">
+                    <div class="todays-workout-container">
+                        <span id="span-date">2026-04-12</span>
+                        <h1 data-i18n="training:todays-t"></h1>
+                        <div class="training-info">
+                            <h3 id="training-name">Trening A</h3>
+                            <div class="training-exercises-container">
+                                <div class="isTable">
+                                    <div class="tableHeader">
+                                        <div data-i18n="training:exercise"></div>
+                                        <div data-i18n="training:sets"></div>
+                                        <div data-i18n="training:reps"></div>
+                                    </div>
+                                    <div class="isLine"></div>
+
+                                    <div class="rows">
+                                        <div class="tableRow">
+                                            <div class="rowItem">
+                                                Bench Press
+                                            </div>
+                                            <div class="rowItem">
+                                                3
+                                            </div>
+                                            <div class="rowItem">
+                                                6
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="startWorkout" data-i18n="training:start-workout"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="break"></div>
+                </section>
+                <div class="sectionBreak"></div>
+                <section id="middle-section" class="section">
+                    <div class="recent-activity-parent">
+                        <h1 data-i18n="training:recent-activity"></h1>
+                        <div class="recent-activity-container">
+                            <div class="recent-activity">
+                                <h3 class="recent-activity-header">Chest Day - Yesterday</h3>
+                                <button class="recent-activity-button" data-i18n="training:check-details"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="break"></div>
+
+                    <div class="current-goals">                                            
+                        <h1 data-i18n="training:current-goals"></h1>
+                        <div class="current-goals-container">
+                            <div class="current-goal">
+                                <span>Wycisnąć 100kg</span><button class="current-goal-check" data-i18n="training:done"></button>
+                            </div>
+                            <div class="current-goal">
+                                <span>Wycisnąć 100kg</span><button class="current-goal-check" data-i18n="training:done"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="break"></div>
+
+                    <div class="last-sessions">
+                        <h1 data-i18n="training:last-sessions"></h1>
+                        <div class="last-sessions-container">
                             <div class="isTable">
                                 <div class="tableHeader">
-                                    <div data-i18n="training:exercise"></div>
-                                    <div data-i18n="training:sets"></div>
-                                    <div data-i18n="training:reps"></div>
+                                    <div data-i18n="training:training"></div>
+                                    <div data-i18n="training:date"></div>
                                 </div>
                                 <div class="isLine"></div>
-                                <div class="columns">
-                                    <div class="tableColumn" id="exercise-name">
-                                        <span>Bench Press</span>
-                                        <span>Lat Pulldown</span>
+                                <div class="rows">
+                                    <div class="tableRow">
+                                        <div class="rowItem">
+                                            Chest Day
+                                        </div>
+                                        <div class="rowItem">
+                                            2026-04-26
+                                        </div>
                                     </div>
-                                    <div class="tableColumn" id="exercise-sets">
-                                        <span>3</span>
-                                        <span>3</span>
-                                    </div>
-                                    <div class="tableColumn" id="exercise-reps">
-                                        <span>6</span>
-                                        <span>6</span>
+                                    <div class="tableRow">
+                                        <div class="rowItem">
+                                            Chest Day
+                                        </div>
+                                        <div class="rowItem">
+                                            2026-04-26
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="startWorkout" data-i18n="training:start-workout"></button>
                         </div>
                     </div>
                 </section>
-                <section id="middle-section" class="section">
-                    <div class="last-activity">
-                        
-                    </div>
-                    <div class="weekly-progress">
-
-                    </div>
-                    <div class="last-sessions">
-
-                    </div>
-                </section>
             </article>
+
+            <div class="loader">
+                <div class="spinner"></div>
+            </div>
+
         </main>
     </body>
 </html>
