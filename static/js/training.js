@@ -105,87 +105,133 @@ document.querySelector("#saveGoal").addEventListener('click', async () => {
 
 const trainingAdder = document.querySelector(".training-adder")
 
+
+
 const nextButton = document.querySelector("#next")
 const previousButton = document.querySelector("#previous")
 const removeButton = document.querySelector("#remove")
+const saveButton = document.querySelector("#save")
+const exercise = document.querySelector("#exercise")
+const sets = document.querySelector("#sets")
+const reps = document.querySelector("#reps")
+const breaks = document.querySelector("#breaks")
 
 let now = 0;
+let values = {};
+
+nextButton.addEventListener('click', () => {
+    now++
+
+    if (now === 1) {
+        const trainingName = document.querySelector("#trainingName").value
+        values['trainingName'] = trainingName
+        document.querySelector(".training-name").classList.add('not-visible')
+        document.querySelector(".training-exercise").classList.remove('not-visible')
+        previousButton.classList.remove('not-visible')
+        removeButton.classList.remove('not-visible')
+        nextButton.setAttribute('data-i18n', 'training:add')
+        updateContent()
+        return
+    }
+
+    if (exercise.value === '' || sets.value === '' || reps.value === '') {
+        now--
+        return
+    }
+
+    values[now - 1] = {
+        exercise: exercise.value,
+        sets: sets.value,
+        reps: reps.value,
+        breaks: breaks.value
+    }
+
+    if (now > 2) {
+        saveButton.classList.remove('not-visible')
+    }
+
+    if (values[now]) {
+        exercise.value = values[now].exercise
+        sets.value = values[now].sets
+        reps.value = values[now].reps
+        breaks.value = values[now].breaks
+    } else {
+        exercise.value = ''
+        sets.value = ''
+        reps.value = ''
+        breaks.value = ''
+    }
+
+    console.log(now, values)
+})
+
+previousButton.addEventListener('click', () => {
+    if (now >= 2 && exercise.value !== '' && sets.value !== '' && reps.value !== '') {
+        values[now] = {
+            exercise: exercise.value,
+            sets: sets.value,
+            reps: reps.value,
+            breaks: breaks.value
+        }
+    }
+
+    now--
+
+    if (now <= 0) {
+        now = 0
+        nextButton.setAttribute('data-i18n', 'training:next')
+        updateContent()
+        previousButton.classList.add('not-visible')
+        removeButton.classList.add('not-visible')
+        saveButton.classList.add('not-visible')
+        document.querySelector(".training-name").classList.remove('not-visible')
+        document.querySelector(".training-exercise").classList.add('not-visible')
+    } else {
+        if (now <= 1) {
+            saveButton.classList.add('not-visible')
+        }
+        exercise.value = values[now].exercise
+        sets.value = values[now].sets
+        reps.value = values[now].reps
+        breaks.value = values[now].breaks
+    }
+})
+
+removeButton.addEventListener('click', () => {
+    delete values[now]
+    exercise.value = ''
+    sets.value = ''
+    reps.value = ''
+    breaks.value = ''
+})
+
+document.querySelector(".exit-adder").addEventListener('click', () => {
+    now = 0
+    overlay.classList.add('not-visible')
+    trainingAdder.classList.add('not-visible')
+})
+
+overlay.addEventListener("click", () => {
+    overlay.classList.add('not-visible')
+    trainingAdder.classList.add('not-visible')
+})
 
 document.querySelector(".createWorkout button").addEventListener('click', () => {
-    const values = {}
+    now = 0
+    values = {}
 
-    if (now === 0) {
-        document.querySelector(".training-name").classList.remove('not-visible')
-        document.querySelector(".training-name input").value = ''
-        document.querySelector(".training-exercise").classList.add('not-visible')
-        document.querySelectorAll(".training-exercise input").forEach(i => [
-            i.value = ''
-        ])
-    }
+    document.querySelector(".training-name").classList.remove('not-visible')
+    document.querySelector(".training-name input").value = ''
+    document.querySelector(".training-exercise").classList.add('not-visible')
+    document.querySelectorAll(".training-exercise input").forEach(i => i.value = '')
+
+    previousButton.classList.add('not-visible')
+    removeButton.classList.add('not-visible')
+    saveButton.classList.add('not-visible')
+    nextButton.setAttribute('data-i18n', 'training:next')
+    updateContent()
 
     trainingAdder.classList.remove('not-visible')
     overlay.classList.remove('not-visible')
-    overlay.addEventListener("click", () => {
-        overlay.classList.add('not-visible')
-        trainingAdder.classList.add('not-visible')
-    })
-    if (!document.querySelector(".training-name").classList.contains('not-visible')) {
-        previousButton.classList.add('not-visible')
-        removeButton.classList.add('not-visible')
-    }
-    
-    const exercise = document.querySelector("#exercise")
-    const sets = document.querySelector("#sets")
-    const reps = document.querySelector("#reps")
-    const breaks = document.querySelector("#breaks")
-
-    nextButton.addEventListener('click', () => {
-        now++
-        if (now === 1) {
-            const trainingName = document.querySelector("#trainingName").value
-            values['trainingName'] = trainingName
-            document.querySelector(".training-name").classList.add('not-visible')
-            document.querySelector(".training-exercise").classList.remove('not-visible')
-            previousButton.classList.remove('not-visible')
-            removeButton.classList.remove('not-visible')
-        }
-        else {
-            const e = exercise.value
-            const s = sets.value
-            const r = reps.value
-            const b = breaks.value
-            const new_exercise = {}
-            new_exercise['exercise'] = e
-            new_exercise['sets'] = s
-            new_exercise['reps'] = r
-            new_exercise['breaks'] = b
-            values[now - 1] = new_exercise
-        }
-        console.log(values)
-    })
-
-    previousButton.addEventListener('click', () => {
-        now--
-        if (now <= 0) {
-            now = 0
-
-            document.querySelector(".training-name").classList.remove('not-visible')
-            document.querySelector(".training-exercise").classList.add('not-visible')
-        }
-        else {
-            const current_values = values[now]
-
-            exercise.value = current_values.exercise
-            sets.value = current_values.sets
-            reps.value = current_values.reps
-            breaks.value = current_values.breaks
-        }
-        console.log(values)
-    })
-
-    document.querySelector(".exit-adder").addEventListener('click', () => {
-        now = 0
-        overlay.classList.add('not-visible')
-        trainingAdder.classList.add('not-visible')
-    })
 })
+
