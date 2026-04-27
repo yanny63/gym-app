@@ -63,6 +63,11 @@
             </aside>
             <article class="training-article not-visible">
                 <section id="todays-workout" class="section">
+                    <div class="createWorkout">
+                        <h1 data-i18n="training:no-trainings-yet"></h1>
+                        <button data-i18n="training:add"></button>
+                    </div>
+
                     <div class="todays-workout-container">
                         <span id="span-date">2026-04-12</span>
                         <h1 data-i18n="training:todays-t"></h1>
@@ -95,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="break"></div>
+                    <div class="break" id="firstSectionBreak"></div>
                 </section>
                 <div class="sectionBreak"></div>
                 <section id="middle-section" class="section">
@@ -111,9 +116,14 @@
 
                     <div class="break"></div>
 
-                    <div class="current-goals">                                            
-                        <h1 data-i18n="training:current-goals"></h1>
+                    <div class="current-goals"> 
+                        <div class="no-goals">
+                            <h1 data-i18n="training:no-goals"></h1>
+                            <button id="addGoal" data-i18n="training:add"></button>
+                        </div>
+                        
                         <div class="current-goals-container">
+                            <h1 data-i18n="training:current-goals"></h1>
                             <div class="current-goal">
                                 <span>Wycisnąć 100kg</span><button class="current-goal-check" data-i18n="training:done"></button>
                             </div>
@@ -155,13 +165,53 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="training-adder not-visible">
+                        <button class="exit-adder">X</button>
+                        <div class="training-name">
+                            <label for="trainingName" data-i18n="training:workoutName"></label>
+                            <input type="text" id="trainingName" data-i18n-placeholder="training:workoutName-placeholder">
+                        </div>
+                        <div class="training-exercise not-visible">
+                            <div>
+                                <label for="exercise" data-i18n="training:exercise"></label>
+                                <input id="exercise" type="text" data-i18n-placeholder="training:exercise-placeholder">
+                            </div>
+                            <div>
+                                <label for="sets" data-i18n="training:exercise-sets"></label>
+                                <input id="sets" type="number" min="1" data-i18n-placeholder="training:exercise-number-placeholder">
+                            </div>
+                            <div>
+                                <label for="reps" data-i18n="training:exercise-reps"></label>
+                                <input id="reps" type="number" min="1" data-i18n-placeholder="training:exercise-number-placeholder">
+                            </div>
+                            <div>
+                                <label for="breaks" data-i18n="training:exercise-breaks"></label>
+                                <input id="breaks" type="number" min="1" data-i18n-placeholder="training:exercise-breaks-placeholder">
+                            </div>
+                        </div>
+                        <div class="training-buttons">
+                            <button class="training-button" id="next" data-i18n="training:next"></button>
+                            <button class="training-button" id="previous" data-i18n="training:previous"></button>
+                            <button class="training-button" id="remove" data-i18n="training:remove"></button>
+                        </div>
+                    </div>
+
+                    <div class="setGoal not-visible">
+                        <label for="setGoal" data-i18n="training:setGoal"></label>
+                        <input id="setGoal" type="text" data-i18n-placeholder="training:setGoal-placeholder">
+                        <button id="saveGoal" data-i18n="training:save"></button>
+                    </div>
                 </section>
             </article>
+
+            
 
             <div class="loader">
                 <div class="spinner"></div>
             </div>
 
         </main>
+        <div class="overlay not-visible"></div>
     </body>
 </html>

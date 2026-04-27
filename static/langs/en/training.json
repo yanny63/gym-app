@@ -15,5 +15,22 @@
     "current-goals": "My Current Goals",
     "done": "Done",
     "last-sessions": "Last Sessions",
-    "date": "Date"
+    "date": "Date",
+    "no-trainings-yet": "You don't have any trainings yet",
+    "add": "Add",
+    "no-goals": "You haven't set any goals yet",
+    "setGoal": "Set a goal",
+    "setGoal-placeholder": "Bench 100kg",
+    "save": "Save",
+    "workoutName": "Workout Name",
+    "workoutName-placeholder": "e.g. Upper Body",
+    "next": "Next",
+    "previous": "Previous",
+    "remove": "Remove",
+    "exercise-placeholder": "e.g. Bench Press",
+    "exercise-sets": "Sets",
+    "exercise-reps": "Reps",
+    "exercise-number-placeholder": "1",
+    "exercise-breaks": "Breaks Duration",
+    "exercise-breaks-placeholder": "3 (minutes)"
 }

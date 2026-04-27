@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, session, request, url_for, j
 from flask_login import LoginManager, login_user, current_user, UserMixin, logout_user, login_required
 from flask_mail import Mail
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 import requests
 import secrets
 import psycopg2
@@ -115,7 +115,7 @@ class User(UserMixin):
                     return False
                 return User(
                     id = row[0],
-                    username = row[1],
+                    name = row[1],
                     email = user,
                     role = row[4],
                     profile_picture = row[7]
@@ -179,41 +179,6 @@ class PasswordUtils:
     def generate_token():
         token = "".join(secrets.choice(string.ascii_letters + string.digits) for _ in range(6))
         return token
-
-# class FileManager:
-#     def __init__(self, path):
-#         self.path = path
-#         self.history = []
-#         self.name = None
-
-#     def saveFile(self):
-#         path = f"images/{self.name}"
-#         if os.path.exists(path):
-#             self.history.append(f"Replaced: {path}")
-#             os.replace(path)
-#             return 'Replaced'
-#         else:
-#             os.path.join('images', self.name)
-#             return 'Saved'
-        
-#     def getFile(self):
-#         if self.name is None:
-#             return 'No such file'
-#         self.history.append(f"Got file: {datetime.now()}")
-#         path = f"images/{self.name}"
-#         return path
-    
-#     def extentionCheck(self, name):
-#         allowed_extentions = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
-#         extention = name.split(".")[1]
-#         if not extention in allowed_extentions:
-#             return False
-#         self.name = name
-#         return True
-    
-#     def getHistory(self):
-#         return self.history
-
 
 @login_manager.user_loader
 def user_get(id):
@@ -306,9 +271,66 @@ def training():
 
 @app.route("/API/training")
 def training_api():
+    conn, cur = database_connect('gym_app')
+
     if not current_user.is_authenticated:
         return "", 404
+    user_id = current_user.id
+    date = datetime.now(timezone.utc)
+    parsed_date = date - timedelta(days=7)
+    try:
+        cur.execute(
+            "SELECT id, training_name, excersises FROM training_sessions WHERE user_id = %s AND date = %s",
+            (user_id, parsed_date)
+        )
+        row = cur.fetchone()
+        if not row:
+            return "", 404
+        t_session = {}
+        t_session['name'] = row[1]
+        t_session['excersises'] = row[2]
 
+        cur.execute(
+            "SELECT id, goal FROM goals WHERE user_id = %s AND done = %s",
+            (user_id, False)
+        )
+        rows = cur.fetchall()
+        goals = []
+        for x in rows:
+            d = {}
+            d['id'] = x[0]
+            d['goal'] = x[1]
+            goals.append(d)
+
+        return {"session": t_session, "goals": goals}
+
+    except Exception as e:
+        print(f"Error - {e}")
+        conn.rollback()
+    finally:
+        conn.close()
+
+@app.route('/API/training/goals', methods=['POST'])
+def goals():
+    conn, cur = database_connect('gym_app')
+    if not current_user.is_authenticated:
+        return "", 403
+    user_id = current_user.id 
+    print(user_id)
+    data = request.get_json()
+    goal = data.get('goal')
+    try: 
+        cur.execute(
+            "INSERT INTO goals (user_id, goal) VALUES (%s, %s)",
+            (user_id, goal)
+        )
+        conn.commit()
+        return {"success": True}, 200
+    except Exception as e:
+        print(f"Error - {e}")
+        conn.rollback()
+    finally:
+        conn.close()
 
 @app.route("/calculator")
 def calculator():

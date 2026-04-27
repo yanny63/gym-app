@@ -52,8 +52,8 @@ async function send_data() {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                user: user,
-                password: password,
+                user: user.value,
+                password: password.value,
                 language: localStorage.getItem('lang') || navigator.language.split("-")[0]
             })
         })

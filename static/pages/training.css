@@ -29,6 +29,7 @@
 }
 
 html, body {
+    position: relative;
     animation: none;
     min-height: 100vh;
 }
@@ -37,8 +38,24 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 }
 
 .not-visible {
+    z-index: 0 !important;
     opacity: 0 !important;
+    position: absolute !important;
 }
+
+.overlay {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: 0.4s;
+}
+
 
 .loader {
     opacity: 1;
@@ -62,6 +79,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 }
 
 main {
+    position: relative;
     padding: 48px;
     display: flex;
     flex-direction: row;
@@ -78,7 +96,6 @@ main {
 .sectionBreak {
     background-color: var(--card);
     min-height: 40px;
-    
 }
 
 .training-aside {
@@ -126,6 +143,134 @@ main {
     align-items: center;
     font-family: "Inter", sans-serif;
     gap: 40px;
+}
+
+.createWorkout {
+    color: var(--text);
+    width: 100%;
+    padding: var(--padding-md);
+    background-color: var(--card);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.createWorkout button {
+    width: 180px;
+    padding: var(--padding-md);
+    background-color: var(--button);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: 0.4s;
+}
+.createWorkout button:hover {
+    background-color: var(--hover);
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.exit-adder {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.training-adder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: var(--bg);
+    z-index: 2100;
+    padding: var(--padding-lg);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    opacity: 1;
+    transition: 0.4s;
+}
+.training-name {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.training-name label {
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: "Inter", sans-serif;
+}
+.training-name input {
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    padding: var(--padding-md);
+    outline: none;
+    border-radius: var(--radius-sm);
+    transition: 0.4s;
+}
+.training-name input:focus {
+    border-color: var(--active);
+}
+.training-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+.training-button {
+    padding: var(--padding-sm);
+    border: none;
+    border-radius: var(--radius-md);
+    min-width: 80px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: var(--button);
+    transition: 0.4s;
+}
+.training-button:hover {
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--hover);
+}
+
+.training-exercise {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+}
+.training-exercise div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4px;
+}
+.training-exercise div label {
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: "Inter", sans-serif;
+}
+.training-exercise div input {
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    padding: var(--padding-md);
+    outline: none;
+    border-radius: var(--radius-sm);
+    transition: 0.4s;
+}
+.training-exercise div input:focus {
+    border-color: var(--active);
 }
 
 .todays-workout-container {
@@ -280,6 +425,79 @@ main {
     background-color: var(--hover);
 }
 
+.setGoal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: var(--bg);
+    z-index: 2100;
+    padding: var(--padding-lg);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    opacity: 1;
+    transition: 0.4s;
+}
+.setGoal label {
+    font-size: 1rem;
+    font-weight: 600;
+}
+.setGoal input {
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    padding: var(--padding-md);
+    outline: none;
+    border-radius: var(--radius-sm);
+    transition: 0.4s;
+}
+.setGoal input:focus {
+    border-color: var(--active);
+}
+.setGoal button {
+    width: 140px;
+    padding: var(--padding-sm);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--button);
+    transition: 0.4s;
+}
+.setGoal button:hover {
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--hover);
+}
+
+.no-goals {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+.no-goals button {
+    width: 180px;
+    padding: var(--padding-md);
+    background-color: var(--button);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: 0.4s;
+}
+.no-goals button:hover {
+    background-color: var(--hover);
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
 .current-goals {
     width: 100%;
     display: flex;
@@ -290,6 +508,7 @@ main {
 .current-goals-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
 }
 .current-goal {
