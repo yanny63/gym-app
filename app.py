@@ -10,6 +10,7 @@ import dotenv
 import os
 import random
 import string
+import json
 
 
 def database_connect(database):
@@ -44,19 +45,19 @@ class User(UserMixin):
         self.profile_picture = profile_picture
 
     @staticmethod
-    def get(username):
+    def get(id):
         conn, cur = database_connect('gym_app')
         try:
             cur.execute(
-                "SELECT * FROM users WHERE username = %s",
-                (username,)
+                "SELECT * FROM users WHERE id = %s",
+                (id,)
             )
             row = cur.fetchone()
             if not row:
                 return None
             return User(
                 id = row[0],
-                name = username,
+                name = row[1],
                 email = row[2],
                 role = row[4],
                 profile_picture = row[7]
@@ -136,7 +137,7 @@ class User(UserMixin):
                     name = user,
                     email = r[2],
                     role = r[4],
-                    profile_picture = row[7]
+                    profile_picture = r[7]
                 )
         except Exception as e:
             print(F"Error - {e}")
@@ -276,19 +277,34 @@ def training_api():
     if not current_user.is_authenticated:
         return "", 404
     user_id = current_user.id
-    date = datetime.now(timezone.utc)
-    parsed_date = date - timedelta(days=7)
+    x = datetime.now()
+    date = x.strftime("%Y-%m-%d")
+    print(date)
+    parsed_date = x - timedelta(days=7)
+    parsed_date = parsed_date.strftime("%Y-%m-%d")
     try:
         cur.execute(
-            "SELECT id, training_name, excersises FROM training_sessions WHERE user_id = %s AND date = %s",
+            "SELECT id, training_name, exercises FROM training_sessions WHERE user_id = %s AND date = %s",
             (user_id, parsed_date)
         )
         row = cur.fetchone()
-        if not row:
+        print(row)
+        cur.execute(
+            "SELECT id, training_name, exercises FROM training_sessions WHERE user_id = %s AND date = %s",
+            (user_id, date)
+        )
+        second_row = cur.fetchone()
+        print(second_row)
+        if not row and not second_row:
             return "", 404
-        t_session = {}
-        t_session['name'] = row[1]
-        t_session['excersises'] = row[2]
+        if row:
+            t_session = {}
+            t_session['name'] = row[1]
+            t_session['exercises'] = row[2]
+        else:
+            t_session = {}
+            t_session['name'] = second_row[1]
+            t_session['exercises'] = second_row[2]
 
         cur.execute(
             "SELECT id, goal FROM goals WHERE user_id = %s AND done = %s",
@@ -310,11 +326,63 @@ def training_api():
     finally:
         conn.close()
 
+@app.route("/API/training/newsession", methods=['POST'])
+def newSession():
+    if not current_user.is_authenticated:
+        return "", 401
+    conn, cur = database_connect('gym_app')
+    data = request.get_json()
+    values = data.get('values')
+    nazwa = values.get('trainingName')
+    del values['trainingName']
+    user_id = current_user.id
+    exercises = json.dumps(values)
+    try:
+        cur.execute(
+            "INSERT INTO training_sessions (user_id, training_name, exercises) VALUES (%s, %s, %s)",
+            (user_id, nazwa, exercises)
+        )
+        conn.commit()
+        return {'success': True}, 201
+    except Exception as e:
+        conn.rollback()
+        print(f"Error - {e}")
+    finally:
+        conn.close()
+
+@app.route("/API/training/lastsessions")
+def lastSessions():
+    if not current_user.is_authenticated:
+        return "", 404
+    conn, cur = database_connect('gym_app')
+    user_id = current_user.id 
+    try:
+        cur.execute(
+            "SELECT id, training_name, exercises, date FROM training_sessions WHERE user_id = %s ORDER BY date DESC LIMIT 5",
+            (user_id,)
+        )
+        rows = cur.fetchall()
+        sessions = []
+        for row in rows:
+            s = {}
+            s['id'] = row[0]
+            s['name'] = row[1]
+            s['exercises'] = row[2]
+            s['date'] = row[3].strftime("%Y-%m-%d")
+            sessions.append(s)
+        print(sessions)
+        return {"sessions": sessions}
+    except Exception as e:
+        print(f"Error - {e}")
+        conn.rollback()
+    finally:
+        conn.close()
+
 @app.route('/API/training/goals', methods=['POST'])
 def goals():
     conn, cur = database_connect('gym_app')
     if not current_user.is_authenticated:
-        return "", 403
+        return "", 401
     user_id = current_user.id 
     print(user_id)
     data = request.get_json()
@@ -325,7 +393,30 @@ def goals():
             (user_id, goal)
         )
         conn.commit()
-        return {"success": True}, 200
+        return {"success": True}, 201
+    except Exception as e:
+        print(f"Error - {e}")
+        conn.rollback()
+    finally:
+        conn.close()
+
+app.route("/API/training/goalDone")
+def goalDone():
+    conn, cur = database_connect('gym_app')
+    data = request.get_json()
+    if not data:
+        return "", 400
+    goal_id = data.get('id')
+    if not goal_id:
+        return "", 400
+
+    try:
+        cur.execute(
+            "UPDATE goals SET done = %s WHERE id = %s",
+            (True, goal_id)
+        )
+        conn.commit()
+        return "", 200
     except Exception as e:
         print(f"Error - {e}")
         conn.rollback()

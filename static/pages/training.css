@@ -481,22 +481,7 @@ main {
     gap: 20px;
     align-items: center;
 }
-.no-goals button {
-    width: 180px;
-    padding: var(--padding-md);
-    background-color: var(--button);
-    border: none;
-    border-radius: var(--radius-sm);
-    color: #fff;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: 0.4s;
-}
-.no-goals button:hover {
-    background-color: var(--hover);
-    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
-}
+
 
 .current-goals {
     width: 100%;
@@ -521,12 +506,17 @@ main {
     border-radius: var(--radius-sm);
     padding: var(--padding-lg);
     
+} 
+.goals {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .current-goal span {
     font-family: "Inter", sans-serif;
     color: var(--text);
     font-weight: 600;
-}
+} 
 .current-goal-check {
     width: 120px;
     padding: var(--padding-sm);
@@ -542,6 +532,22 @@ main {
 .current-goal-check:hover {
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
     background-color: var(--hover);
+}
+.addGoal {
+    width: 180px;
+    padding: var(--padding-md);
+    background-color: var(--button);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: 0.4s;
+}
+.addGoal:hover {
+    background-color: var(--hover);
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .last-sessions {

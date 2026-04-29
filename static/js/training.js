@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelector(".loader").classList.add("not-visible")
         document.querySelector(".training-article").classList.remove("not-visible")
     }, 1000);
+    await todaysSession()
+    await lastSessions()
+})
+
+async function todaysSession() {
     try {
         const res = await fetch(`/API/training`)
         if (res.status === 404) {
@@ -25,58 +30,88 @@ document.addEventListener("DOMContentLoaded", async () => {
             throw new Error(res.status)
         }
         const data = await res.json()
-        noGoals.style.display = 'none'
+        // noGoals.style.display = 'none'
         createWorkoutDiv.style.display = 'none'
         const session = data.session
         const name = session.name
         const exercises = session.exercises
-        const date = new Date()
-        document.querySelector("#span-date").innerText = date
+        const date = new Date();
+        
+        
+        document.querySelector("#span-date").innerText = date.toISOString().split('T')[0]
         document.querySelector("#training-name").innerText = name
-        isTable
+        
+        document.querySelector(".createWorkout").classList.add('not-visible')
+        document.querySelector(".todays-workout-container").classList.remove('not-visible')
 
-        exercises.forEach(exercise => {
-            const div_parent = document.createElement('div')
-            const div1 = document.createElement('div')
-            const div2 = document.createElement('div')
-            const div3 = document.createElement('div')
-            
-            div1.innerText = exercise.name
-            div2.innerText = exercise.sets
-            div3.innerText = exercise.reps
-            
-            div_parent.appendChild(div1)
-            div_parent.appendChild(div2)
-            div_parent.appendChild(div3)
-            div_parent.classList.add('tableRow')
-            div1.classList.add('rowItem')
-            div2.classList.add('rowItem')
-            div3.classList.add('rowItem')
-            document.querySelector(".rows").appendChild(div_parent)
-        })
+        if (exercises) {
+            console.log(exercises)
+            Object.values(exercises).forEach(exercise => {
+                const div_parent = document.createElement('div')
+                const div1 = document.createElement('div')
+                const div2 = document.createElement('div')
+                const div3 = document.createElement('div')
+                div1.innerText = exercise.exercise
+                div2.innerText = exercise.sets
+                div3.innerText = exercise.reps
+                
+                div_parent.appendChild(div1)
+                div_parent.appendChild(div2)
+                div_parent.appendChild(div3)
+                div_parent.classList.add('tableRow')
+                div1.classList.add('rowItem')
+                div2.classList.add('rowItem')
+                div3.classList.add('rowItem')
+                document.querySelector(".rows").appendChild(div_parent)
+            })
+        }
 
         const goals = data.goals
-        goals.forEach(goal => {
-            const div = document.createElement('div')
-            div.innerHTML = `<span>${goal.goal}</span><button class="current-goal-check" data-i18n="training:done" data-id="${goal.id}"></button>`
-            div.classList.add('current-goal')
-            document.querySelector(".current-goals-container").appendChild(div)
-        })
+        if (goals) {
+            goals.forEach(goal => {
+                const div = document.createElement('div')
+                div.innerHTML = `<span>${goal.goal}</span><button class="current-goal-check" data-i18n="training:done" data-id="${goal.id}"></button>`
+                div.classList.add('current-goal')
+                document.querySelector(".goals").appendChild(div)
+            })
+            document.querySelector(".no-goals").classList.add('not-visible')
+        }
+        else {
+            document.querySelector(".current-goals-container").classList.add('not-visible')
+        }
         
     }
     catch (err) {
         console.log(`Error - ${err}`)
     }
-})
+}
+
+async function lastSessions() {
+    try {
+        const res = await fetch("/API/training/lastsessions")
+        if (!res.ok) {
+            throw new Error(res.status)
+        }
+        const data = await res.json()
+        console.log(data)
+
+        const rows = document.querySelector(".rows")
+    }
+    catch (err) {
+        console.log(`Error - ${err}`)
+    }
+}
 
 const setGoal = document.querySelector(".setGoal")
 const overlay = document.querySelector(".overlay")
-document.querySelector("#addGoal").addEventListener("click", () => {
-    setGoal.classList.remove('not-visible')
-    overlay.classList.remove('not-visible')
-    overlay.addEventListener("click", () => {
-        overlay.classList.add('not-visible')
-        setGoal.classList.add('not-visible')
+document.querySelectorAll(".addGoal").forEach(button => {
+    button.addEventListener("click", () => {
+        setGoal.classList.remove('not-visible')
+        overlay.classList.remove('not-visible')
+        overlay.addEventListener("click", () => {
+            overlay.classList.add('not-visible')
+            setGoal.classList.add('not-visible')
+        })
     })
 })
 
@@ -102,6 +137,32 @@ document.querySelector("#saveGoal").addEventListener('click', async () => {
         setGoal.style.boxShadow = '0 0 4px 4px rgba(239, 68, 68, 0.2)'
     }
 })
+
+
+document.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('current-goal-check')) {
+        const d = e.target.closest('div')
+        const goal_id = e.target.dataset.id
+        try {
+            const res = await fetch('', {
+                method: "POST",
+                headers: {'Content-Type': "application/json"},
+                body: JSON.stringify({
+                    "id": goal_id
+                })
+            })
+            if (!res.ok) {
+                throw new Error(res.status)
+            }
+            d.remove()
+        } 
+        catch (err) {
+            console.log(err)
+        }
+    }
+})
+
+
 
 const trainingAdder = document.querySelector(".training-adder")
 
@@ -165,7 +226,7 @@ nextButton.addEventListener('click', () => {
     console.log(now, values)
 })
 
-previousButton.addEventListener('click', () => {
+previousButton.addEventListener('click', () => { 
     if (now >= 2 && exercise.value !== '' && sets.value !== '' && reps.value !== '') {
         values[now] = {
             exercise: exercise.value,
@@ -203,6 +264,28 @@ removeButton.addEventListener('click', () => {
     sets.value = ''
     reps.value = ''
     breaks.value = ''
+})
+
+saveButton.addEventListener('click', async () => {
+    if (Object.keys(values).length < 2) return
+    try {
+        const res = await fetch('/API/training/newsession', {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                values: values
+            })
+        })
+        if (!res.ok) {
+            throw new Error(res.status)
+        }
+        location.reload()
+    }
+    catch (err) {
+        console.log(`Error - ${err}`)
+        trainingAdder.style.border = '1px solid #ef4444'
+        trainingAdder.style.boxShadow = '0 0 4px 4px rgba(239, 68, 68, 0.2)'
+    }
 })
 
 document.querySelector(".exit-adder").addEventListener('click', () => {
