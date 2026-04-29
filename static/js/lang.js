@@ -29,6 +29,13 @@ function updateContent() {
 function changeLanguage(lang) {
     localStorage.setItem("lang", lang)
     i18next.changeLanguage(lang, () => {
+        if (typeof dayjs !== 'undefined') {
+            
+            dayjs.locale(lang)
+            document.querySelectorAll('[data-date]').forEach(el => {
+                el.textContent = dayjs.utc(el.dataset.date).local().fromNow()
+            })
+        }
         updateContent()
     })
 }

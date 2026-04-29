@@ -32,5 +32,6 @@
     "exercise-reps": "Reps",
     "exercise-number-placeholder": "1",
     "exercise-breaks": "Breaks Duration",
-    "exercise-breaks-placeholder": "3 (minutes)"
+    "exercise-breaks-placeholder": "3 (minutes)",
+    "exercise-current-set": "Set"
 }

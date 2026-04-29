@@ -15,6 +15,12 @@
         <script src="{{ url_for('static', filename='js/lang.js') }}" defer></script>
         <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
         <script src="{{ url_for('static', filename='js/training.js') }}" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/relativeTime.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/utc.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/locale/pl.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/locale/es.min.js" defer></script>
+        <script src="{{ url_for('static', filename='js/timer.js') }}" defer></script>
 
         <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
         <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
@@ -81,7 +87,7 @@
                                         <div data-i18n="training:reps"></div>
                                     </div>
                                     <div class="isLine"></div>
-                                    <div class="rows"></div>
+                                    <div class="rows" id="training-exercises-js-container"></div>
                                 </div>
                                 <button class="startWorkout" data-i18n="training:start-workout"></button>
                             </div>
@@ -94,10 +100,7 @@
                     <div class="recent-activity-parent">
                         <h1 data-i18n="training:recent-activity"></h1>
                         <div class="recent-activity-container">
-                            <div class="recent-activity">
-                                <h3 class="recent-activity-header">Chest Day - Yesterday</h3>
-                                <button class="recent-activity-button" data-i18n="training:check-details"></button>
-                            </div>
+                        
                         </div>
                     </div>
 
@@ -129,8 +132,8 @@
                                     <div data-i18n="training:date"></div>
                                 </div>
                                 <div class="isLine"></div>
-                                <div class="rows">
-                                    <div class="tableRow">
+                                <div class="rows" id="last-sessions-js-container">
+                                    <!-- <div class="tableRow">
                                         <div class="rowItem">
                                             Chest Day
                                         </div>
@@ -145,7 +148,7 @@
                                         <div class="rowItem">
                                             2026-04-26
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -189,8 +192,56 @@
                         <button id="saveGoal" data-i18n="training:save"></button>
                     </div>
                 </section>
-            </article>
+                <section class="section not-visible" id="training_ongoing">
+                    <h1 id="training_name"></h1>
+                    <div class="exercise">
+                        <h3 id="exercise_name"></h3>
+                        <div class="ongoing-container">
+                            <label for="ongoing_reps" data-i18n="training:reps"></label>
+                            <input class="ongoing-input" min="1" id="ongoing_reps" type="number" data-i18n-placeholder="training:exercise-number-placeholder">
+                        </div>
+                        <div class="ongoing-container">
+                            <label for="ongoing_sets" data-i18n="training:exercise-current-set"></label>
+                            <input id="ongoing_sets" class="ongoing-input" data-i18n-placeholder="training:exercise-number-placeholder" type="number" readonly>
+                        </div>
+                        <div class="ongoing-container">
+                            <label for="ongoing-breaks" data-i18n="training:exercise-breaks"></label>
+                            <input id="ongoing-breaks" min="1" class="ongoing-input" data-i18n-placeholder="training:exercise-number-placeholder" type="number">
+                        </div>
+                    </div>
 
+                    <!-- TIMER -->
+                    <div class="timer">
+                        <div class="timer-timer">
+                            <div class="timer-container">
+                                <span id="timer">00:00:00</span>
+                                <button onclick="save()" class="flag not-visible">
+                                    <svg width="30" height="30" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="15" y="20" width="8" height="80" fill="#222" />
+                                        <circle cx="19" cy="15" r="6" fill="#222"/>
+                                        <path d="
+                                            M25 25
+                                            C40 15, 60 15, 75 20
+                                            C90 25, 100 20, 110 18
+                                            L110 70
+                                            C100 72, 90 75, 75 70
+                                            C60 65, 40 65, 25 75
+                                            Z" fill="#222"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="buttons">
+                                <button class="start" onclick="start()" data-i18n="timer:start"></button>
+                                <button class="stop" onclick="stop_interval()" data-i18n="timer:stop"></button>
+                                <button class="reset" onclick="reset()" data-i18n="timer:reset"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="saved-timestamps">
+
+                    </div>
+                </section>
+            </article>
             
 
             <div class="loader">

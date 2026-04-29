@@ -318,7 +318,22 @@ def training_api():
             d['goal'] = x[1]
             goals.append(d)
 
-        return {"session": t_session, "goals": goals}
+        cur.execute(
+            "SELECT id, training_name, exercises, date FROM training_sessions WHERE user_id = %s ORDER BY date DESC LIMIT 3",
+            (user_id,) 
+        )
+        r = cur.fetchall()
+        recent_activity = []
+        for row in r:
+            recent_act = {}
+            recent_act['id'] = row[0]
+            recent_act['training_name'] = row[1]
+            recent_act['exercises'] = row[2]
+            recent_act['date'] = row[3].strftime("%Y-%m-%d")
+            recent_activity.append(recent_act)
+
+
+        return {"session": t_session, "goals": goals, "recent_activity": recent_activity}
 
     except Exception as e:
         print(f"Error - {e}")
@@ -400,7 +415,7 @@ def goals():
     finally:
         conn.close()
 
-app.route("/API/training/goalDone")
+@app.route("/API/training/goalDone", methods=['POST'])
 def goalDone():
     conn, cur = database_connect('gym_app')
     data = request.get_json()
