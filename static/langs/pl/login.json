@@ -1,0 +1,16 @@
+{
+    "title": "LastPush - Logowanie",
+    "log_in": "Zaloguj się",
+    "login-ur-acc": "Zaloguj się do swojego konta LastPush",
+    "with-google": "Kontynuuj przez Google",
+    "with-apple": "Kontynuuj przez Apple",
+    "oremail": "Lub przez e-mail",
+    "user": "Nazwa użytkownika lub e-mail",
+    "user-placeholder": "Nazwa użytkownika lub e-mail",
+    "password": "Hasło",
+    "password-placeholder": "••••••••••••",
+    "login": "Zaloguj",
+    "forgot": "Zresetuj hasło",
+    "new": "Jesteś nowy w LastPush?",
+    "signup": "Zarejestruj się"
+}
