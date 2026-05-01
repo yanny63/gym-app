@@ -16,9 +16,9 @@
     "done": "Gotowe",
     "last-sessions": "Ostatnie sesje",
     "date": "Data",
-    "no-trainings-yet": "Nie masz jeszcze żadnych treningów",
+    "no-trainings-yet": "Nie masz żadnych treningów",
     "add": "Dodaj",
-    "no-goals": "Nie masz jeszcze wyznaczonych celów",
+    "no-goals": "Nie masz wyznaczonych celów",
     "setGoal": "Wyznacz cel",
     "setGoal-placeholder": "Wyciśnięcie 100kg",
     "save": "Zapisz",
@@ -33,5 +33,7 @@
     "exercise-number-placeholder": "1",
     "exercise-breaks": "Czas przerwy",
     "exercise-breaks-placeholder": "3 (minuty)",
-    "exercise-current-set": "Seria"
+    "exercise-current-set": "Seria",
+    "no-training-today": "Brak zaplanowanego treningu na dziś"
+
 }

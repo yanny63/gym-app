@@ -32,5 +32,6 @@
     "exercise-reps": "Reps",
     "exercise-number-placeholder": "1",
     "exercise-breaks": "Duración del descanso",
-    "exercise-breaks-placeholder": "3 (minutos)"
+    "exercise-breaks-placeholder": "3 (minutos)",
+    "no-training-today": "No hay entrenamientos programados para hoy"
 }

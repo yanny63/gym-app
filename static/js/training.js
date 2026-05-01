@@ -10,6 +10,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     await lastSessions()
 })
 
+function displayButtons(bool) {
+    if (bool) {
+        document.querySelector(".seeWorkoutInfo").classList.remove('not-visible')
+        document.querySelector(".startWorkout").classList.add('not-visible')
+    }
+    else {
+        document.querySelector(".seeWorkoutInfo").classList.add('not-visible')
+        document.querySelector(".startWorkout").classList.remove('not-visible')
+    }
+}
+
 async function todaysSession() {
     try {
         const res = await fetch(`/API/training`)
@@ -24,6 +35,10 @@ async function todaysSession() {
             document.querySelector("#firstSectionBreak").style.display = 'none'
         }
         if (!res.ok) {
+            if (res.status === 404) {
+                document.querySelector(".loader").classList.add("not-visible")
+                document.querySelector(".training-article").classList.remove("not-visible")
+            }
             throw new Error(res.status)
         }
         const data = await res.json()
@@ -31,8 +46,8 @@ async function todaysSession() {
         const session = data.session
         const name = session.name
         const exercises = session.exercises
-        const date = new Date();
         
+        const date = new Date();
         
         document.querySelector("#span-date").innerText = date.toISOString().split('T')[0]
         document.querySelector("#training-name").innerText = name
@@ -46,9 +61,9 @@ async function todaysSession() {
                 const div1 = document.createElement('div')
                 const div2 = document.createElement('div')
                 const div3 = document.createElement('div')
-                div1.innerText = exercise.exercise
-                div2.innerText = exercise.sets
-                div3.innerText = exercise.reps
+                div1.innerText = exercise.name
+                div2.innerText = exercise.sets.length
+                div3.innerText = exercise.sets[0].reps
                 
                 div_parent.appendChild(div1)
                 div_parent.appendChild(div2)
@@ -57,6 +72,7 @@ async function todaysSession() {
                 div1.classList.add('rowItem')
                 div2.classList.add('rowItem')
                 div3.classList.add('rowItem')
+                
                 startWorkout.setAttribute('data-training', JSON.stringify(session))
                 document.querySelector("#training-exercises-js-container").appendChild(div_parent)
             })
@@ -106,6 +122,9 @@ async function todaysSession() {
             })
             
         }
+
+        displayButtons(session?.data ?? false)
+
         updateContent()
         document.querySelector(".loader").classList.add("not-visible")
         document.querySelector(".training-article").classList.remove("not-visible")
@@ -146,16 +165,18 @@ async function lastSessions() {
     }
 }
 
+function closeGoal() {
+    overlay.classList.add('not-visible')
+    setGoal.classList.add('not-visible')
+}
+
 const setGoal = document.querySelector(".setGoal")
 const overlay = document.querySelector(".overlay")
 document.querySelectorAll(".addGoal").forEach(button => {
     button.addEventListener("click", () => {
         setGoal.classList.remove('not-visible')
         overlay.classList.remove('not-visible')
-        overlay.addEventListener("click", () => {
-            overlay.classList.add('not-visible')
-            setGoal.classList.add('not-visible')
-        })
+        overlay.addEventListener("click", closeGoal, {once: true})
     })
 })
 
@@ -225,6 +246,8 @@ const sets = document.querySelector("#sets")
 const reps = document.querySelector("#reps")
 const breaks = document.querySelector("#breaks")
 
+
+
 let now = 0;
 let values = {};
 
@@ -270,7 +293,6 @@ nextButton.addEventListener('click', () => {
         reps.value = ''
         breaks.value = ''
     }
-
 })
 
 previousButton.addEventListener('click', () => { 
@@ -315,12 +337,23 @@ removeButton.addEventListener('click', () => {
 
 saveButton.addEventListener('click', async () => {
     if (Object.keys(values).length < 2) return
+    const exercises = Object.entries(values)
+    .filter(([key]) => key !== 'trainingName')
+    .map(([, v]) => ({
+        name: v.exercise,
+        sets: Array.from({ length: parseInt(v.sets) }, () => ({ 
+            reps: v.reps, 
+            weight: "", 
+            break: v.breaks 
+        }))
+    }))
     try {
         const res = await fetch('/API/training/newsession', {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                values: values
+                name: values.trainingName,
+                exercises: exercises
             })
         })
         if (!res.ok) {
@@ -341,10 +374,11 @@ document.querySelector(".exit-adder").addEventListener('click', () => {
     trainingAdder.classList.add('not-visible')
 })
 
-overlay.addEventListener("click", () => {
+function hideAdder() {
     overlay.classList.add('not-visible')
     trainingAdder.classList.add('not-visible')
-})
+}
+overlay.addEventListener("click", hideAdder, {once: true})
 
 document.querySelector(".createWorkout button").addEventListener('click', () => {
     now = 0
@@ -365,21 +399,160 @@ document.querySelector(".createWorkout button").addEventListener('click', () => 
     overlay.classList.remove('not-visible')
 })
 
-startWorkout.addEventListener("click", () => {
-    const training_name_header = document.querySelector("#training_name")
-    const exercise_name_header = document.querySelector("#exercise_name")
-    const exercise_breaks_input = document.querySelector("#ongoing-breaks")
+let current_exercise = 0
+let current_set = 0
+let training
+const current_workout_values = {}
 
-    const training = JSON.parse(startWorkout.getAttribute('data-training'))
-    console.log(training)
+const next_exercise = document.querySelector("#ongoing_next") // BUTTON 
+const ongoing_set_input = document.querySelector("#ongoing_sets") // INPUT
+const exercise_name_header = document.querySelector("#exercise_name") // HEADER
+const training_name_header = document.querySelector("#training_name") // HEADER
+const exercise_breaks_input = document.querySelector("#ongoing-breaks") // INPUT
+const exercise_reps_input = document.querySelector("#ongoing_reps") // INPUT
+const exercise_weight_input = document.querySelector("#ongoing_weight") // INPUT
+const previous_exercise = document.querySelector("#ongoing_previous") // BUTTON
+const end_workout = document.querySelector("#ongoing_end") // BUTTON
+
+async function sendData(values) {
+    const workout = values.workout_name
+    const exercises = values.exercises
+    try {
+        const res = await fetch('', {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                workout: workout,            
+                exercises: exercises
+            })
+        })
+        if (!res.ok) {
+            throw new Error(res.status)
+        }
+        await todaysSession()
+    }
+    catch (err) {
+        console.log(`Error - ${err}`)
+    }
+}
+
+startWorkout.addEventListener("click", () => {
+    training = JSON.parse(startWorkout.getAttribute('data-training'))
+    
     document.querySelector("#training_ongoing").classList.remove('not-visible')
     document.querySelector("#todays-workout").classList.add('not-visible')
     document.querySelector("#middle-section").classList.add('not-visible')
     
     
-    let current_exercise = 1
-
+    current_workout_values['workout_name'] = training.name
+    current_workout_values['exercises'] = Array.from({ length: parseInt(training.exercises.length) }, () => ({
+        name: "",
+        sets: []
+    }))
+    
     training_name_header.textContent = training.name
-    exercise_name_header.textContent = training.exercises[current_exercise.toString()].exercise
-    exercise_breaks_input.value = training.exercises[current_exercise.toString()].breaks
+    exercise_name_header.textContent = training.exercises[0].name
+    exercise_weight_input.value = training.exercises[0].sets[0].weight
+    exercise_reps_input.value = training.exercises[0].sets[0].reps
+    exercise_breaks_input.value = training.exercises[0].sets[0].break
+})
+
+function loadSetValues(exercise, set) {
+    const saved = current_workout_values['exercises'][exercise]?.sets[set]
+    const template = training.exercises[exercise].sets[set]
+    exercise_weight_input.value = saved?.weight ?? template.weight
+    exercise_reps_input.value = saved?.reps ?? template.reps
+    exercise_breaks_input.value = saved?.break ?? template.break
+}
+
+next_exercise.addEventListener("click", async () => {
+    if (previous_exercise.classList.contains('not-visible')) {
+        previous_exercise.classList.remove('not-visible')
+    }
+    training = JSON.parse(startWorkout.getAttribute('data-training'))
+    if (!current_workout_values['exercises'][current_exercise].name) {
+        current_workout_values['exercises'][current_exercise].name = exercise_name_header.textContent
+    }
+    current_workout_values['exercises'][current_exercise].sets[current_set] = {
+        break: exercise_breaks_input.value,
+        reps: exercise_reps_input.value,
+        weight: exercise_weight_input.value
+    }
+    current_set++
+    if (current_set > training['exercises'][current_exercise]['sets'].length - 1) {
+        current_set = 0
+        current_exercise++
+        if (current_exercise > training['exercises'].length - 1) {
+            document.querySelector(".ongoing-training-div-container").classList.add('not-visible')
+            document.querySelector(".workout-done").classList.remove('not-visible')
+            document.querySelector(".isDone").innerHTML = `
+                <svg viewBox="0 0 100 100" width="120">
+                    <circle cx="50" cy="50" r="40"
+                        fill="none" stroke="#22c55e"
+                        stroke-width="4"
+                        stroke-dasharray="251"
+                        stroke-dashoffset="251"
+                        stroke-linecap="round">
+                        <animate attributeName="stroke-dashoffset" from="251" to="0" dur="0.6s" fill="freeze" begin="0s"/>
+                    </circle>
+                    <path d="M28 50 L43 65 L72 35"
+                        fill="none" stroke="#22c55e"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-dasharray="60"
+                        stroke-dashoffset="60">
+                        <animate attributeName="stroke-dashoffset" from="60" to="0" dur="0.4s" fill="freeze" begin="0.6s"/>
+                    </path>
+                </svg>`
+            await sendData(current_workout_values)
+            return
+        }
+        exercise_name_header.textContent = training.exercises[current_exercise].name
+        loadSetValues(current_exercise, current_set)
+    }
+    else {
+        loadSetValues(current_exercise, current_set)
+    }
+    console.log(current_workout_values)
+})
+
+previous_exercise.addEventListener('click', () => {
+    current_workout_values['exercises'][current_exercise].sets[current_set] = {
+        break: exercise_breaks_input.value,
+        reps: exercise_reps_input.value,
+        weight: exercise_weight_input.value
+    }
+    if (current_set === 0) {
+        current_exercise--
+        current_set = training['exercises'][current_exercise]['sets'].length - 1
+    }
+    else {
+        current_set--
+    }
+    if (current_set === 0 && current_exercise === 0) {
+        previous_exercise.classList.add('not-visible')
+    }
+    exercise_name_header.textContent = training.exercises[current_exercise].name
+    loadSetValues(current_exercise, current_set)
+})
+
+function hideEnsuring() {
+    overlay.classList.add('not-visible')
+    document.querySelector(".ensure").classList.remove('isVisible')
+    overlay.removeEventListener('click', hideEnsuring)
+}
+
+end_workout.addEventListener('click', () => {
+    overlay.removeEventListener('click', closeGoal)
+    overlay.removeEventListener('click', hideAdder)
+    document.querySelector(".ensure").classList.add('isVisible')
+    overlay.classList.remove('not-visible')
+    overlay.addEventListener('click', hideEnsuring, {once: true})
+})
+document.querySelector("#yes").addEventListener('click', async () => {
+    await sendData(current_workout_values)
+})
+document.querySelector("#no").addEventListener('click', () => {
+    hideEnsuring()
 })

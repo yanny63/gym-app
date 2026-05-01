@@ -465,6 +465,23 @@ main {
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
+.seeWorkoutInfo {
+    width: 180px;
+    padding: var(--padding-md);
+    background-color: var(--button);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: 0.4s;
+}
+.seeWorkoutInfo:hover {
+    background-color: var(--hover);
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
 .recent-activity-parent {
     display: flex;
     flex-direction: column;
@@ -653,6 +670,13 @@ main {
     gap: 20px;
 }
 
+.ongoing-training-div-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: center;
+}
 .exercise {
     display: flex;
     flex-direction: column;
@@ -677,4 +701,118 @@ main {
 }
 .ongoing-input:focus {
     border-color: var(--active);
+}
+
+.ongoing_buttons {
+    max-width: 420px;
+    width: 100%;
+    padding: var(--padding-md);
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+.ongoing_button {
+    flex: 1;
+    padding: var(--padding-sm);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--button);
+    transition: background-color 0.4s, box-shadow 0.4s;
+}
+.ongoing_button:hover {
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--hover);
+}
+
+.workout-done {
+    max-width: 420px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: "Inter", sans-serif;
+    align-items: center;
+}
+.isDone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+}
+.done-button {
+    max-width: 120px;
+    width: 100%;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: var(--padding-md);
+    background-color: var(--button);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.4s;
+}
+.done-button:hover {
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--hover);
+}
+
+.isVisible {
+    opacity: 1 !important;
+    pointer-events: all !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 2001 !important;
+}
+
+.ensure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    gap: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-80%) translateX(-50%);
+    padding: var(--padding-lg);
+    max-width: 420px;
+    width: 100%;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: 0.4s;
+}
+.ensure div {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    width: 50%;
+}
+.ensure div button {
+    flex: 1;
+    padding: var(--padding-sm);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--button);
+    transition: 0.4s;
+}
+
+.ensure div button:hover { 
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--hover);
 }

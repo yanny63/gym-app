@@ -16,7 +16,7 @@ main {
     background-color: var(--card);
     border-radius: var(--radius-sm);
     opacity: 0;
-    transform: translateX(-80px);
+    transform: translateY(-40px);
     z-index: 0;
     transition: 0.6s;
 }
@@ -86,7 +86,7 @@ main {
     flex-direction: row;
     background-color: var(--card);
     opacity: 0;
-    transform: translateY(-80px);
+    transform: translateY(-40px);
     transition: 0.6s;
 }
 
@@ -160,7 +160,7 @@ main {
     flex-direction: row;
     background-color: var(--card);
     opacity: 0;
-    transform: translateX(-80px);
+    transform: translateY(-40px);
     transition: 0.6s;
 }
 

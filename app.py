@@ -92,7 +92,12 @@ class User(UserMixin):
                 (username, email, hashed)
             )
             conn.commit()
-            return User.get(username)
+            cur.execute(
+                "SELECT id FROM users WHERE username = %s",
+                (username,)
+            )
+            u_id = cur.fetchone()
+            return User.get(u_id[0])
         except Exception as e:
             conn.rollback()
             print(f"Error - {e}")
@@ -220,7 +225,7 @@ def register():
             return {"error": p_not_strong, "input": "password"}
 
         user = User.register(username, email, password, False, False)
-
+    
         if user == 'username':
             return {"error": u_taken, "input": "username"}
         if user == 'email':
@@ -290,11 +295,11 @@ def training_api():
         row = cur.fetchone()
         print(row)
         cur.execute(
-            "SELECT id, training_name, exercises FROM training_sessions WHERE user_id = %s AND date = %s",
+            "SELECT id, training_name, exercises, done FROM training_sessions WHERE user_id = %s AND date = %s",
             (user_id, date)
         )
         second_row = cur.fetchone()
-        print(second_row)
+        
         if not row and not second_row:
             return "", 404
         if row:
@@ -305,6 +310,7 @@ def training_api():
             t_session = {}
             t_session['name'] = second_row[1]
             t_session['exercises'] = second_row[2]
+            t_session['done'] = second_row[3]
 
         cur.execute(
             "SELECT id, goal FROM goals WHERE user_id = %s AND done = %s",
@@ -347,11 +353,10 @@ def newSession():
         return "", 401
     conn, cur = database_connect('gym_app')
     data = request.get_json()
-    values = data.get('values')
-    nazwa = values.get('trainingName')
-    del values['trainingName']
+    exercises = data.get('exercises')
+    nazwa = data.get('name')
     user_id = current_user.id
-    exercises = json.dumps(values)
+    exercises = json.dumps(exercises)
     try:
         cur.execute(
             "INSERT INTO training_sessions (user_id, training_name, exercises) VALUES (%s, %s, %s)",
@@ -385,7 +390,6 @@ def lastSessions():
             s['exercises'] = row[2]
             s['date'] = row[3].strftime("%Y-%m-%d")
             sessions.append(s)
-        print(sessions)
         return {"sessions": sessions}
     except Exception as e:
         print(f"Error - {e}")
