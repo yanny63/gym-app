@@ -418,7 +418,7 @@ async function sendData(values) {
     const workout = values.workout_name
     const exercises = values.exercises
     try {
-        const res = await fetch('', {
+        const res = await fetch('/API/training/saveworkout', {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -430,6 +430,28 @@ async function sendData(values) {
             throw new Error(res.status)
         }
         await todaysSession()
+        document.querySelector(".workout-done").classList.remove('not-visible')
+        document.querySelector(".ongoing-training-div-container").classList.add('not-visible')
+        document.querySelector(".isDone").innerHTML = `
+                <svg viewBox="0 0 100 100" width="120">
+                    <circle cx="50" cy="50" r="40"
+                        fill="none" stroke="#22c55e"
+                        stroke-width="4"
+                        stroke-dasharray="251"
+                        stroke-dashoffset="251"
+                        stroke-linecap="round">
+                        <animate attributeName="stroke-dashoffset" from="251" to="0" dur="0.6s" fill="freeze" begin="0s"/>
+                    </circle>
+                    <path d="M28 50 L43 65 L72 35"
+                        fill="none" stroke="#22c55e"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-dasharray="60"
+                        stroke-dashoffset="60">
+                        <animate attributeName="stroke-dashoffset" from="60" to="0" dur="0.4s" fill="freeze" begin="0.6s"/>
+                    </path>
+                </svg>`
     }
     catch (err) {
         console.log(`Error - ${err}`)
@@ -479,32 +501,12 @@ next_exercise.addEventListener("click", async () => {
         weight: exercise_weight_input.value
     }
     current_set++
+    ongoing_set_input.value = current_set + 1
     if (current_set > training['exercises'][current_exercise]['sets'].length - 1) {
         current_set = 0
         current_exercise++
+        ongoing_set_input.value = 1
         if (current_exercise > training['exercises'].length - 1) {
-            document.querySelector(".ongoing-training-div-container").classList.add('not-visible')
-            document.querySelector(".workout-done").classList.remove('not-visible')
-            document.querySelector(".isDone").innerHTML = `
-                <svg viewBox="0 0 100 100" width="120">
-                    <circle cx="50" cy="50" r="40"
-                        fill="none" stroke="#22c55e"
-                        stroke-width="4"
-                        stroke-dasharray="251"
-                        stroke-dashoffset="251"
-                        stroke-linecap="round">
-                        <animate attributeName="stroke-dashoffset" from="251" to="0" dur="0.6s" fill="freeze" begin="0s"/>
-                    </circle>
-                    <path d="M28 50 L43 65 L72 35"
-                        fill="none" stroke="#22c55e"
-                        stroke-width="5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-dasharray="60"
-                        stroke-dashoffset="60">
-                        <animate attributeName="stroke-dashoffset" from="60" to="0" dur="0.4s" fill="freeze" begin="0.6s"/>
-                    </path>
-                </svg>`
             await sendData(current_workout_values)
             return
         }
@@ -514,7 +516,6 @@ next_exercise.addEventListener("click", async () => {
     else {
         loadSetValues(current_exercise, current_set)
     }
-    console.log(current_workout_values)
 })
 
 previous_exercise.addEventListener('click', () => {
@@ -530,6 +531,7 @@ previous_exercise.addEventListener('click', () => {
     else {
         current_set--
     }
+    ongoing_set_input.value = current_set + 1
     if (current_set === 0 && current_exercise === 0) {
         previous_exercise.classList.add('not-visible')
     }

@@ -65,6 +65,7 @@ class User(UserMixin):
         except Exception as e:
             conn.rollback()
             print(f"Error - {e}")
+            return "", 500
         finally:
             conn.close()
 
@@ -101,6 +102,7 @@ class User(UserMixin):
         except Exception as e:
             conn.rollback()
             print(f"Error - {e}")
+            return "", 500
         finally:
             conn.close()
         
@@ -146,6 +148,7 @@ class User(UserMixin):
                 )
         except Exception as e:
             print(F"Error - {e}")
+            return "", 500
         finally:
             conn.close()
 
@@ -344,6 +347,7 @@ def training_api():
     except Exception as e:
         print(f"Error - {e}")
         conn.rollback()
+        return "", 500
     finally:
         conn.close()
 
@@ -367,6 +371,7 @@ def newSession():
     except Exception as e:
         conn.rollback()
         print(f"Error - {e}")
+        return "", 500
     finally:
         conn.close()
 
@@ -394,8 +399,35 @@ def lastSessions():
     except Exception as e:
         print(f"Error - {e}")
         conn.rollback()
+        return "", 500
     finally:
         conn.close()
+
+@app.route("/API/training/saveworkout", methods=["POST"])
+def workoutSave():
+    if not current_user.is_authenticated:
+        return "", 401
+    conn, cur = database_connect('gym_app')
+    user_id = current_user.id 
+    data = request.get_json()
+    workout_name = data.get('workout')
+    exercises = json.dumps(data.get('exercises'))
+    
+    try:
+        cur.execute(
+            "INSERT INTO training_sessions (user_id, training_name, exercises, done) VALUES (%s, %s, %s, %s)",
+            (user_id, workout_name, exercises, True)
+        )
+        conn.commit()
+        return "", 200
+    except Exception as e:
+        print(f"workoutSave Error - {e}")
+        conn.rollback()
+        return "", 500
+    finally:
+        conn.close()
+    
+    
 
 @app.route('/API/training/goals', methods=['POST'])
 def goals():
@@ -416,6 +448,7 @@ def goals():
     except Exception as e:
         print(f"Error - {e}")
         conn.rollback()
+        return "", 500
     finally:
         conn.close()
 
@@ -439,6 +472,7 @@ def goalDone():
     except Exception as e:
         print(f"Error - {e}")
         conn.rollback()
+        return "", 500
     finally:
         conn.close()
 
