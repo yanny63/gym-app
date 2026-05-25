@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, session, request, url_for, j
 from flask_login import LoginManager, login_user, current_user, UserMixin, logout_user, login_required
 from flask_mail import Mail
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import timedelta, datetime, timezone
+from datetime import timedelta, datetime, timezone, date
 import requests
 import secrets
 import psycopg2
@@ -296,9 +296,8 @@ def training_api():
             (user_id, parsed_date)
         )
         row = cur.fetchone()
-        print(row)
         cur.execute(
-            "SELECT id, training_name, exercises, done FROM training_sessions WHERE user_id = %s AND date = %s",
+            "SELECT id, training_name, exercises, done FROM training_sessions WHERE user_id = %s AND date = %s ORDER BY id DESC",
             (user_id, date)
         )
         second_row = cur.fetchone()
@@ -311,10 +310,11 @@ def training_api():
             t_session['exercises'] = row[2]
         else:
             t_session = {}
+            t_session['id'] = second_row[0]
             t_session['name'] = second_row[1]
             t_session['exercises'] = second_row[2]
             t_session['done'] = second_row[3]
-
+        print(t_session)
         cur.execute(
             "SELECT id, goal FROM goals WHERE user_id = %s AND done = %s",
             (user_id, False)
@@ -415,11 +415,29 @@ def workoutSave():
     
     try:
         cur.execute(
+            "SELECT date FROM training_sessions WHERE user_id = %s AND done = TRUE ORDER BY date DESC LIMIT 1", 
+            (user_id,)
+        )
+        r = cur.fetchone()
+        if r and r[0] == date.today():
+            return {"error": "Already saved today"}, 409
+        
+        cur.execute(
             "INSERT INTO training_sessions (user_id, training_name, exercises, done) VALUES (%s, %s, %s, %s)",
             (user_id, workout_name, exercises, True)
         )
         conn.commit()
-        return "", 200
+        cur.execute(
+            "SELECT exercises, date FROM training_sessions WHERE user_id = %s AND training_name = %s ORDER BY date DESC LIMIT 1 OFFSET 1",
+            (user_id, workout_name)
+        )
+        row = cur.fetchone()
+        previous_session = {}
+        previous_session['workout_name'] = workout_name
+        if row:
+            previous_session['exercises'] = row[0]
+            previous_session['date'] = row[1]
+        return {'previous_session': previous_session}, 200
     except Exception as e:
         print(f"workoutSave Error - {e}")
         conn.rollback()
@@ -530,6 +548,13 @@ def calculate():
 @app.route("/timer")
 def timer():
     return render_template('timer.html')
+
+@app.route("/logout")
+def logout():
+    if not current_user.is_authenticated: 
+        return
+    logout_user()
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run(

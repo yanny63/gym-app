@@ -123,7 +123,7 @@ async function todaysSession() {
             
         }
 
-        displayButtons(session?.data ?? false)
+        displayButtons(session?.done ?? false)
 
         updateContent()
         document.querySelector(".loader").classList.add("not-visible")
@@ -414,7 +414,13 @@ const exercise_weight_input = document.querySelector("#ongoing_weight") // INPUT
 const previous_exercise = document.querySelector("#ongoing_previous") // BUTTON
 const end_workout = document.querySelector("#ongoing_end") // BUTTON
 
+let previous_workout
+let isSaving = false  
+
 async function sendData(values) {
+    if (isSaving) return  
+    isSaving = true
+
     const workout = values.workout_name
     const exercises = values.exercises
     try {
@@ -452,9 +458,11 @@ async function sendData(values) {
                         <animate attributeName="stroke-dashoffset" from="60" to="0" dur="0.4s" fill="freeze" begin="0.6s"/>
                     </path>
                 </svg>`
+        previous_workout = await res.json()  // poprawka: brakowało await
     }
     catch (err) {
         console.log(`Error - ${err}`)
+        isSaving = false  // reset przy błędzie żeby można było spróbować ponownie
     }
 }
 
@@ -492,6 +500,11 @@ next_exercise.addEventListener("click", async () => {
         previous_exercise.classList.remove('not-visible')
     }
     training = JSON.parse(startWorkout.getAttribute('data-training'))
+    if (current_workout_values['exercises'].length - 1 < current_exercise) {
+        document.querySelector('.overlay').classList.remove('not-visible')
+        document.querySelector('.ensure').classList.add('isVisible')
+        return
+    }
     if (!current_workout_values['exercises'][current_exercise].name) {
         current_workout_values['exercises'][current_exercise].name = exercise_name_header.textContent
     }
@@ -546,15 +559,29 @@ function hideEnsuring() {
 }
 
 end_workout.addEventListener('click', () => {
+    overlay.style.pointerEvents = 'none'
+    overlay.style.cursor = 'not-allowed'
     overlay.removeEventListener('click', closeGoal)
     overlay.removeEventListener('click', hideAdder)
     document.querySelector(".ensure").classList.add('isVisible')
     overlay.classList.remove('not-visible')
     overlay.addEventListener('click', hideEnsuring, {once: true})
 })
+
 document.querySelector("#yes").addEventListener('click', async () => {
+    if (!document.querySelector('.overlay').classList.contains('not-visible')) {
+        document.querySelector('.overlay').classList.add('not-visible')
+    }
     await sendData(current_workout_values)
+    overlay.style.poinerEvents = 'all'
 })
+
 document.querySelector("#no").addEventListener('click', () => {
+    overlay.style.poinerEvents = 'all'
     hideEnsuring()
 })
+
+document.querySelector('.done-button').addEventListener('click', () => {
+    window.location.reload()
+})
+
