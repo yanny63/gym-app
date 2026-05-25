@@ -816,3 +816,54 @@ main {
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
     background-color: var(--hover);
 }
+
+.recent-training {
+    background-color: var(--card);
+    padding: var(--padding-md);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.recent-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+.recent-header span {
+    position: absolute;
+    top: 0;
+    left: 8px;
+}
+.recent-header h1 {
+    flex: 1;
+    text-align: center;
+}
+
+.recent-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.recent-exercise {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.recent-set {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.recent-sets {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -126,8 +126,53 @@ async function todaysSession() {
         displayButtons(session?.done ?? false)
 
         updateContent()
+
         document.querySelector(".loader").classList.add("not-visible")
         document.querySelector(".training-article").classList.remove("not-visible")
+
+        document.querySelectorAll(".recent-activity-button").forEach(button => {
+            button.addEventListener('click', async () => {
+                const id = button.dataset.id
+                const res = await fetch(`/API/getRecentActivity/${id}`)
+                if (!res.ok) {
+                    throw new Error(res.status)
+                }
+                const data = await res.json()
+                const new_container = document.createElement('div')
+                console.log(data)
+                new_container.innerHTML = `
+                    <div class="recent-header">
+                        <span class="recent-date">${data.values.date}</span> <h1>${data.values.training_name}</h1>
+                    </div>
+                    <div class="recent-main">
+                        ${data.values.exercises.map(exercise => `
+                            <div class="recent-exercise">
+                                <h2 class="recent-exercise-label">${exercise.name}</h2>
+                                <div class="recent-sets">
+                                    <h3 data-i18n="training:sets"></h3>
+                                    ${exercise.sets.map(set => `
+                                        <div class="recent-set">
+                                            <p><span data-i18n="training:reps"></span>: ${set.reps !== '' ? set.reps : 0}</p>
+                                            <p><span data-i18n="training:break"></span>: ${set.break !== '' ? set.break : 0}s</p>
+                                            <p><span data-i18n="training:weight"></span>: ${set.weight !== '' ? set.weight : 0}kg</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>`
+                new_container.classList.add('recent-training')
+                document.querySelectorAll('.training-article section').forEach(section => {
+                    section.classList.add('not-visible')
+                })
+                document.querySelectorAll('.training-article div').forEach(div => {
+                    if (div.classList.contains('recent-training')) return
+                    div.classList.add('not-visible')
+                })
+                document.querySelector('.training-article').appendChild(new_container)
+                updateContent()
+            })
+        })
     }
     catch (err) {
         console.log(`Error - ${err}`)
@@ -584,4 +629,3 @@ document.querySelector("#no").addEventListener('click', () => {
 document.querySelector('.done-button').addEventListener('click', () => {
     window.location.reload()
 })
-

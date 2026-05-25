@@ -403,6 +403,37 @@ def lastSessions():
     finally:
         conn.close()
 
+@app.route("/API/getRecentActivity/<w_id>")
+def recent(w_id):
+    if not current_user.is_authenticated:
+        return "", 401
+    conn, cur = database_connect('gym_app')
+    print(w_id)
+    if not w_id:
+        return "", 400
+    try:
+        cur.execute(
+            """SELECT * FROM training_sessions WHERE id = %s""", 
+            (int(w_id),)
+        )
+        row = cur.fetchone()
+        values = {}
+        print(row)
+        values['id'] = w_id
+        values['training_name'] = row[2]
+        values["exercises"] = row[3]
+        values["date"] = row[4].strftime("%Y-%m-%d")
+        values["done"] = row[5]
+        
+        return {"values": values}, 200
+    except Exception as e:
+        print(e) 
+        return "", 500
+    finally:
+        conn.close() 
+    
+    
+
 @app.route("/API/training/saveworkout", methods=["POST"])
 def workoutSave():
     if not current_user.is_authenticated:
