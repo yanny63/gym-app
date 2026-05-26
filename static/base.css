@@ -40,12 +40,12 @@ html {
 
 body {
     background-color: var(--bg);
-    animation: animate-body 1.5s ease-in-out;
+    animation: animate-body 1s ease-in-out;
 }
 
 @keyframes animate-body {
-    from {transform: translateY(-100px);}
-    to {transform: translateY(0);}
+    from {transform: translateY(-40px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
 }
 
 .nav-not_visible {

@@ -40,8 +40,12 @@
                                 <button onclick="changeLanguage('es')">Español</button>
                             </div>
                         </div>
+                        {% if not current_user.is_authenticated %} 
                         <a href="{{ url_for('login') }}" data-i18n="common:login"></a>
                         <a href="{{ url_for('register') }}" data-i18n="common:signup"></a>
+                        {% else %} 
+                        <a href="{{ url_for('logout') }}" data-i18n="common:logout"></a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
