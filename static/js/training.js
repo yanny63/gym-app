@@ -42,44 +42,49 @@ async function todaysSession() {
             throw new Error(res.status)
         }
         const data = await res.json()
-        createWorkoutDiv.style.display = 'none'
+        console.log(data)
         const session = data.session
-        const name = session.name
-        const exercises = session.exercises
-        
-        const date = new Date();
-        
-        document.querySelector("#span-date").innerText = date.toISOString().split('T')[0]
-        document.querySelector("#training-name").innerText = name
-        
-        document.querySelector(".createWorkout").classList.add('not-visible')
-        document.querySelector(".todays-workout-container").classList.remove('not-visible')
-
-        if (Object.keys(exercises).length > 0) {
-            Object.values(exercises).forEach(exercise => {
-                const div_parent = document.createElement('div')
-                const div1 = document.createElement('div')
-                const div2 = document.createElement('div')
-                const div3 = document.createElement('div')
-                div1.innerText = exercise.name
-                div2.innerText = exercise.sets.length
-                div3.innerText = exercise.sets[0].reps
-                
-                div_parent.appendChild(div1)
-                div_parent.appendChild(div2)
-                div_parent.appendChild(div3)
-                div_parent.classList.add('tableRow')
-                div1.classList.add('rowItem')
-                div2.classList.add('rowItem')
-                div3.classList.add('rowItem')
-                
-                startWorkout.setAttribute('data-training', JSON.stringify(session))
-                document.querySelector("#training-exercises-js-container").appendChild(div_parent)
-            })
+        createWorkoutDiv.style.display = 'none'
+        if (Object.keys(session).length > 0) {
+            
+            const name = session.name
+            const exercises = session.exercises
+            
+            const date = new Date();
+            
+            document.querySelector("#span-date").innerText = date.toISOString().split('T')[0]
+            document.querySelector("#training-name").innerText = name
+            
             document.querySelector(".createWorkout").classList.add('not-visible')
             document.querySelector(".todays-workout-container").classList.remove('not-visible')
+
+            if (Object.keys(exercises).length > 0) {
+                Object.values(exercises).forEach(exercise => {
+                    const div_parent = document.createElement('div')
+                    const div1 = document.createElement('div')
+                    const div2 = document.createElement('div')
+                    const div3 = document.createElement('div')
+                    div1.innerText = exercise.name
+                    div2.innerText = exercise.sets.length
+                    div3.innerText = exercise.sets[0].reps
+                    
+                    div_parent.appendChild(div1)
+                    div_parent.appendChild(div2)
+                    div_parent.appendChild(div3)
+                    div_parent.classList.add('tableRow')
+                    div1.classList.add('rowItem')
+                    div2.classList.add('rowItem')
+                    div3.classList.add('rowItem')
+                    
+                    startWorkout.setAttribute('data-training', JSON.stringify(session))
+                    document.querySelector("#training-exercises-js-container").appendChild(div_parent)
+                })
+                document.querySelector(".createWorkout").classList.add('not-visible')
+                document.querySelector(".todays-workout-container").classList.remove('not-visible')
+            }
         }
         else {
+            document.querySelector(".createWorkout").style.display = ""
             document.querySelector(".createWorkout").classList.remove('not-visible')
             document.querySelector(".todays-workout-container").classList.add('not-visible')
         }
@@ -97,7 +102,7 @@ async function todaysSession() {
         else {
             document.querySelector(".current-goals-container").classList.add('not-visible')
         }
-        
+
         const r_activity = data.recent_activity
         if (r_activity.length > 0) {
             r_activity.forEach(activity => {

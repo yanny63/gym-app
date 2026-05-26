@@ -302,18 +302,16 @@ def training_api():
         )
         second_row = cur.fetchone()
         
-        if not row and not second_row:
-            return "", 404
+        t_session = {}
         if row:
-            t_session = {}
             t_session['name'] = row[1]
             t_session['exercises'] = row[2]
-        else:
-            t_session = {}
+        elif second_row:
             t_session['id'] = second_row[0]
             t_session['name'] = second_row[1]
             t_session['exercises'] = second_row[2]
             t_session['done'] = second_row[3]
+
         print(t_session)
         cur.execute(
             "SELECT id, goal FROM goals WHERE user_id = %s AND done = %s",
