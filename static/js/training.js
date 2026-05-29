@@ -144,10 +144,12 @@ async function todaysSession() {
                 }
                 const data = await res.json()
                 const new_container = document.createElement('div')
-                console.log(data)
+            
                 new_container.innerHTML = `
                     <div class="recent-header">
-                        <span class="recent-date">${data.values.date}</span> <h1>${data.values.training_name}</h1>
+                        <span class="recent-date">${data.values.date}</span> 
+                        <h1>${data.values.training_name}</h1> 
+                        <button class="exit-button">X</button>
                     </div>
                     <div class="recent-main">
                         ${data.values.exercises.map(exercise => `
@@ -166,11 +168,20 @@ async function todaysSession() {
                             </div>
                         `).join('')}
                     </div>`
+                new_container.querySelector('.exit-button').addEventListener('click', () => {
+                    document.querySelector('.training-article').removeChild(new_container)
+                    document.querySelectorAll('.training-article section').forEach(s => {
+                        if (s.id === 'training_ongoing') return 
+                        s.classList.remove('not-visible')
+                    })
+                    document.querySelectorAll('.sectionBreak').forEach(d => d.classList.remove('not-visible'))
+                })
                 new_container.classList.add('recent-training')
                 document.querySelectorAll('.training-article section').forEach(section => {
+                    if (section.id === 'training_ongoing') return 
                     section.classList.add('not-visible')
                 })
-                document.querySelectorAll('.training-article div').forEach(div => {
+                document.querySelectorAll('.sectionBreak').forEach(div => {
                     if (div.classList.contains('recent-training')) return
                     div.classList.add('not-visible')
                 })

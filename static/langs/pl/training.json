@@ -34,6 +34,17 @@
     "exercise-breaks": "Czas przerwy",
     "exercise-breaks-placeholder": "3 (minuty)",
     "exercise-current-set": "Seria",
-    "no-training-today": "Brak zaplanowanego treningu na dziś"
-
+    "no-training-today": "Brak zaplanowanego treningu na dziś",
+    "weight": "Waga",
+    "exercise-weight-placeholder": "60kg",
+    "end": "Zakończ",
+    "continue": "Kontynuuj",
+    "workout-done": "Trening ukończony!",
+    "are-u-sure": "Czy na pewno chcesz zakończyć trening?",
+    "yes": "Tak",
+    "no": "Nie",
+    "break": "Przerwa",
+    "editGoal": "Edytuj",
+    "deleteGoal": "Usuń",
+    "svgIsDone": "Zmień status celu (wykonany/niewykonany)"
 }

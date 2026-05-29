@@ -45,5 +45,8 @@
     "are-u-sure": "Are you sure you want to end the workout?",
     "yes": "Yes",
     "no": "No",
-    "break": "Break"
+    "break": "Break",
+    "editGoal": "Edit",
+    "deleteGoal": "Delete",
+    "svgIsDone": "Change your goal's status (done/incomplete)"
 }

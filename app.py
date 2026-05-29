@@ -301,7 +301,7 @@ def training_api():
             (user_id, date)
         )
         second_row = cur.fetchone()
-        
+
         t_session = {}
         if row:
             t_session['name'] = row[1]
@@ -522,6 +522,84 @@ def goalDone():
         return "", 500
     finally:
         conn.close()
+
+@app.route("/training/myGoals")
+def myGoals():
+    if not current_user.is_authenticated:
+        return render_template("goals.html")
+    
+    conn, cur = database_connect('gym_app')
+    data = []
+    
+    u_id = current_user.id 
+
+    try:
+        cur.execute(
+            "SELECT id, goal, done FROM goals WHERE user_id = %s", (u_id,)
+        )
+        rows = cur.fetchall()
+        if rows:
+            for row in rows:
+                d = {}
+                d["id"] = row[0]
+                d["goal"] = row[1]
+                d["done"] = row[2]
+                data.append(d)
+    except:
+        pass
+
+    return render_template("goals.html", data=data)
+
+@app.route("/API/updateGoals", methods=['POST'])
+def updateGoals():
+    data = request.get_json()
+    if not data:
+        return {"error": "No data"}, 400
+    requestType = data.get("type")
+    goalId = data.get("id")
+    if not goalId or not requestType: 
+        return {"error": "No data"}, 400
+    conn, cur = database_connect('gym_app')
+    match requestType:
+        case "update":
+            content = data.get("content")
+            if content == "":
+                return "", 411
+            try:
+                cur.execute(
+                "UPDATE goals SET goal = %s WHERE id = %s",
+                    (content, goalId)
+                )
+                conn.commit()
+            except:
+                conn.rollback()
+                return "", 500
+        case "delete":
+            try:
+                cur.execute(
+                    "DELETE FROM goals WHERE id = %s", (goalId,)
+                )
+                conn.commit()
+            except:
+                conn.rollback()
+                return "", 500
+        case "updateStatus":
+            done = data.get("done")
+            if not done:
+                return {"error": "No data"}, 400
+            try:
+                cur.execute(
+                    "UPDATE goals SET done = %s WHERE id = %s", (done, goalId) 
+                )
+                conn.commit()
+            except:
+                conn.rollback()
+                return "", 500
+        case _:
+            return {"error": "No data"}, 400
+    return "", 200
+
+
 
 @app.route("/calculator")
 def calculator():
