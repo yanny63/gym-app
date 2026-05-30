@@ -656,6 +656,40 @@ def calculate():
 def timer():
     return render_template('timer.html')
 
+@app.route("/workouts")
+def workouts():
+    conn, cur = database_connect('gym_app')
+    routines = []
+    try:
+        cur.execute(
+            "SELECT * FROM workout_routines"
+        )
+        rows = cur.fetchall()
+        for row in rows:
+            routine = {}
+            routine["id"] = row[0]
+            routine["name"] = row[1]
+            if len(row[2]) > 170:
+                routine["description"] = row[2][:170] + "..."
+            else:
+                routine["description"] = row[2]
+            match row[3]:
+                case "universal":
+                    routine["difficulty"] = "Universal"
+                case "beginner":
+                    routine["difficulty"] = "Beginner"
+                case "intermediate":
+                    routine["difficulty"] = "Intermediate"
+                case "advanced":
+                    routine["difficulty"] = "Advanced"
+            routine["weeks"] = row[4]
+            routine["days"] = row[5]
+            routine["image"] = row[7]
+            routines.append(routine)
+    except Exception as e: 
+        app.logger.error(f"Failed to fetch routines: {e}")
+    return render_template('workouts.html', routines=routines)
+
 @app.route("/logout")
 def logout():
     if not current_user.is_authenticated: 

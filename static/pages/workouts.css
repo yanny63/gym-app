@@ -1,0 +1,105 @@
+:root {
+    --bg: #f8fafc;
+    --card: #f1f5f9;
+    --border: #e2e8f0;
+
+    --text: #0f172a;
+    --text-secondary: #64748b;
+
+    --button: #3b82f6;   
+    --hover: #2563eb;    
+    --active: #1d4ed8;   
+
+    --accent-soft: #dbeafe;
+    --disabled: #e2e2e2;
+
+    --padding-sm: 6px;
+    --padding-md: 12px;
+    --padding-lg: 18px;
+
+  
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+
+  
+    --input-bg: #f8fafc;
+    --input-border: #cbd5e1;
+}
+.workouts-article {
+  width: 100%;
+}
+.routines {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+}
+
+.routine {
+  display: flex;
+  flex-direction: column;
+  width: clamp(340px, 28vw, 520px);
+  background: var(--card);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.routine:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.routine-image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.routine-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.routine:hover .routine-image {
+  transform: scale(1.04);
+}
+
+.routine-body {
+  padding: 1rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.routine-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.routine-header h2 {
+  font-size: 17px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.routine-difficulty {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: #E6F1FB;
+  color: #0C447C;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
